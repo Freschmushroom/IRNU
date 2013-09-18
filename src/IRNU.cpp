@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 #include "IRNU.hpp"
+#include "socket/udpsocket.h"
+#include <unistd.h>
 
 std::vector<handler> l_handler;
 
@@ -43,12 +45,37 @@ void printPackage(base_package bp) {
 	std::cout << std::endl;
 }
 
+void test() {
+  UDPSocket udp;
+  udp.start_connection();
+  base_package bp;
+  bp.protocol = PROTOCOL_RCP;
+  bp.package = 1;
+  int i;
+  unsigned char buff[254];
+  for(i = 0; i < 254; ++i) {
+    buff[i] = (char)i;
+  }
+  bp.data = buff;
+  struct sockaddr_in addr;
+  addr.sin_family = AF_INET;
+  addr.sin_port = htons(PORT);
+  if (inet_aton("127.0.0.1", &addr.sin_addr) == 0)
+    std::cout << "Error: inet_aton()" << std::endl;
+  bp.remote_addr = addr;
+  udp << bp;
+  bp.protocol = PROTOCOL_IRTUTP;
+  udp << bp;
+  sleep(3);
+}
+
 int main() {
 	std::cout << "Hello" << std::endl;
 	addHandler(printPackage);
 	unsigned char msg[256];
-	msg[0] = PROTOCOL_IRTUTP;
+	msg[0] = PROTOCOL_CCP;
 	msg[1] = 1;
 	handle(msg);
+	test();
 	return 0;
 }

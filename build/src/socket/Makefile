@@ -72,14 +72,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/felix/projects/IRNU.git/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles /home/felix/projects/IRNU.git/build/src/CMakeFiles/progress.marks
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	cd /home/felix/projects/IRNU.git/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles /home/felix/projects/IRNU.git/build/src/socket/CMakeFiles/progress.marks
+	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/socket/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/socket/clean
 .PHONY : clean
 
 # The main clean target
@@ -88,12 +88,12 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/socket/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/socket/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
@@ -101,83 +101,14 @@ depend:
 	cd /home/felix/projects/IRNU.git/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-src/CMakeFiles/IRNU.dir/rule:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/IRNU.dir/rule
-.PHONY : src/CMakeFiles/IRNU.dir/rule
-
-# Convenience name for target.
-IRNU: src/CMakeFiles/IRNU.dir/rule
-.PHONY : IRNU
-
-# fast build rule for target.
-IRNU/fast:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/build
-.PHONY : IRNU/fast
-
-IRNU.o: IRNU.cpp.o
-.PHONY : IRNU.o
-
-# target to build an object file
-IRNU.cpp.o:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/IRNU.cpp.o
-.PHONY : IRNU.cpp.o
-
-IRNU.i: IRNU.cpp.i
-.PHONY : IRNU.i
-
-# target to preprocess a source file
-IRNU.cpp.i:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/IRNU.cpp.i
-.PHONY : IRNU.cpp.i
-
-IRNU.s: IRNU.cpp.s
-.PHONY : IRNU.s
-
-# target to generate assembly for a file
-IRNU.cpp.s:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/IRNU.cpp.s
-.PHONY : IRNU.cpp.s
-
-socket/udpsocket.o: socket/udpsocket.cpp.o
-.PHONY : socket/udpsocket.o
-
-# target to build an object file
-socket/udpsocket.cpp.o:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.o
-.PHONY : socket/udpsocket.cpp.o
-
-socket/udpsocket.i: socket/udpsocket.cpp.i
-.PHONY : socket/udpsocket.i
-
-# target to preprocess a source file
-socket/udpsocket.cpp.i:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.i
-.PHONY : socket/udpsocket.cpp.i
-
-socket/udpsocket.s: socket/udpsocket.cpp.s
-.PHONY : socket/udpsocket.s
-
-# target to generate assembly for a file
-socket/udpsocket.cpp.s:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.s
-.PHONY : socket/udpsocket.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... IRNU"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... IRNU.o"
-	@echo "... IRNU.i"
-	@echo "... IRNU.s"
-	@echo "... socket/udpsocket.o"
-	@echo "... socket/udpsocket.i"
-	@echo "... socket/udpsocket.s"
 .PHONY : help
 
 

@@ -5,6 +5,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/felix/projects/IRNU.git/src/IRNU.cpp" "/home/felix/projects/IRNU.git/build/src/CMakeFiles/IRNU.dir/IRNU.cpp.o"
+  "/home/felix/projects/IRNU.git/src/socket/udpsocket.cpp" "/home/felix/projects/IRNU.git/build/src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

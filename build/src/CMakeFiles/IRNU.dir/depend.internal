@@ -4,3 +4,9 @@
 src/CMakeFiles/IRNU.dir/IRNU.cpp.o
  /home/felix/projects/IRNU.git/src/IRNU.cpp
  /home/felix/projects/IRNU.git/src/IRNU.hpp
+ /home/felix/projects/IRNU.git/src/socket/../IRNU.hpp
+ /home/felix/projects/IRNU.git/src/socket/udpsocket.h
+src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.o
+ /home/felix/projects/IRNU.git/src/socket/../IRNU.hpp
+ /home/felix/projects/IRNU.git/src/socket/udpsocket.cpp
+ /home/felix/projects/IRNU.git/src/socket/udpsocket.h

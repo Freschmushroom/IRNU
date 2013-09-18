@@ -3,4 +3,10 @@
 
 src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/IRNU.cpp
 src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/IRNU.hpp
+src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/socket/../IRNU.hpp
+src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/socket/udpsocket.h
+
+src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.o: ../src/socket/../IRNU.hpp
+src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.o: ../src/socket/udpsocket.cpp
+src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.o: ../src/socket/udpsocket.h
 
