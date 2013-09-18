@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/felix/projects/IRNU.git/src/IRNU.cpp
+iostream
+-
+vector
+-
+IRNU.hpp
+/home/felix/projects/IRNU.git/src/IRNU.hpp
+
+/home/felix/projects/IRNU.git/src/IRNU.hpp
+
