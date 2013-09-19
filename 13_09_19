@@ -3,7 +3,7 @@ Changes:
 	-Fixed Package size to 256 bytes
 	-Packages are now castable using void pointers
 	
-While creating new packages structs must start with followinf fields:
+While creating new packages structs must start with following fields:
   unsigned char protocol;
   unsigned char package;
 
