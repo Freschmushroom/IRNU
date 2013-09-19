@@ -61,15 +61,18 @@ CMAKE_BINARY_DIR = /home/felix/projects/IRNU.git/build
 # Convenience name for "all" pass in the directory.
 src/all: src/CMakeFiles/IRNU.dir/all
 src/all: src/socket/all
+src/all: src/rcp/all
 .PHONY : src/all
 
 # Convenience name for "clean" pass in the directory.
 src/clean: src/CMakeFiles/IRNU.dir/clean
 src/clean: src/socket/clean
+src/clean: src/rcp/clean
 .PHONY : src/clean
 
 # Convenience name for "preinstall" pass in the directory.
 src/preinstall: src/socket/preinstall
+src/preinstall: src/rcp/preinstall
 .PHONY : src/preinstall
 
 #=============================================================================
@@ -79,7 +82,7 @@ src/preinstall: src/socket/preinstall
 src/CMakeFiles/IRNU.dir/all:
 	$(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/depend
 	$(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/felix/projects/IRNU.git/build/CMakeFiles  1 2
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/felix/projects/IRNU.git/build/CMakeFiles  1 2 3
 	@echo "Built target IRNU"
 .PHONY : src/CMakeFiles/IRNU.dir/all
 
@@ -89,7 +92,7 @@ all: src/CMakeFiles/IRNU.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/IRNU.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/IRNU.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 0
 .PHONY : src/CMakeFiles/IRNU.dir/rule
@@ -121,6 +124,21 @@ src/socket/clean:
 # Convenience name for "preinstall" pass in the directory.
 src/socket/preinstall:
 .PHONY : src/socket/preinstall
+
+#=============================================================================
+# Directory level rules for directory src/rcp
+
+# Convenience name for "all" pass in the directory.
+src/rcp/all:
+.PHONY : src/rcp/all
+
+# Convenience name for "clean" pass in the directory.
+src/rcp/clean:
+.PHONY : src/rcp/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/rcp/preinstall:
+.PHONY : src/rcp/preinstall
 
 #=============================================================================
 # Special targets to cleanup operation of make.

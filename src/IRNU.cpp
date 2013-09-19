@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "IRNU.hpp"
+#include "rcp/irnu_rcp.hpp"
 #include "socket/udpsocket.h"
 #include <unistd.h>
 
@@ -15,9 +16,11 @@ void handle(unsigned char* data) {
 	base_package bp;
 	bp.protocol = data[0];
 	bp.package = data[1];
-	bp.data = & data[2];
 	int i = 0;
-	for(;i < l_handler.size(); ++i) {
+	for(i = 0; i < 254; ++i) {
+	  bp.data[i] = data[i + 2];
+	}
+	for(i = 0; i < l_handler.size(); ++i) {
 		l_handler[i](bp);
 	}
 }
@@ -52,11 +55,10 @@ void test() {
   bp.protocol = PROTOCOL_RCP;
   bp.package = 1;
   int i;
-  unsigned char buff[254];
+  //unsigned char buff[254];
   for(i = 0; i < 254; ++i) {
-    buff[i] = (char)i;
+    bp.data[i] = (char)i;
   }
-  bp.data = buff;
   struct sockaddr_in addr;
   addr.sin_family = AF_INET;
   addr.sin_port = htons(PORT);
@@ -67,6 +69,12 @@ void test() {
   bp.protocol = PROTOCOL_IRTUTP;
   udp << bp;
   sleep(3);
+  base_package bp_;
+  bp_.data[0] = 0x02;
+  bp_.protocol = PROTOCOL_RCP;
+  bp_.package = PACKAGE_RCP_ACK;
+  rcp_package_ack * ack = (rcp_package_ack *) &bp_;
+  std::cout << "ACK for pack:" << (int)(ack->ack_package) << std::endl;
 }
 
 int main() {

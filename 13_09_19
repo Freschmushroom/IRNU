@@ -1,0 +1,11 @@
+Changes:
+	-Added RCP Packages
+	-Fixed Package size to 256 bytes
+	-Packages are now castable using void pointers
+	
+While creating new packages structs must start with followinf fields:
+  unsigned char protocol;
+  unsigned char package;
+
+And must end with:
+  struct sockaddr_in remote_addr;

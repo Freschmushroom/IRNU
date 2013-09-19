@@ -139,6 +139,30 @@ IRNU.cpp.s:
 	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/IRNU.cpp.s
 .PHONY : IRNU.cpp.s
 
+rcp/irnu_rcp_util.o: rcp/irnu_rcp_util.cpp.o
+.PHONY : rcp/irnu_rcp_util.o
+
+# target to build an object file
+rcp/irnu_rcp_util.cpp.o:
+	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_util.cpp.o
+.PHONY : rcp/irnu_rcp_util.cpp.o
+
+rcp/irnu_rcp_util.i: rcp/irnu_rcp_util.cpp.i
+.PHONY : rcp/irnu_rcp_util.i
+
+# target to preprocess a source file
+rcp/irnu_rcp_util.cpp.i:
+	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_util.cpp.i
+.PHONY : rcp/irnu_rcp_util.cpp.i
+
+rcp/irnu_rcp_util.s: rcp/irnu_rcp_util.cpp.s
+.PHONY : rcp/irnu_rcp_util.s
+
+# target to generate assembly for a file
+rcp/irnu_rcp_util.cpp.s:
+	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_util.cpp.s
+.PHONY : rcp/irnu_rcp_util.cpp.s
+
 socket/udpsocket.o: socket/udpsocket.cpp.o
 .PHONY : socket/udpsocket.o
 
@@ -175,6 +199,9 @@ help:
 	@echo "... IRNU.o"
 	@echo "... IRNU.i"
 	@echo "... IRNU.s"
+	@echo "... rcp/irnu_rcp_util.o"
+	@echo "... rcp/irnu_rcp_util.i"
+	@echo "... rcp/irnu_rcp_util.s"
 	@echo "... socket/udpsocket.o"
 	@echo "... socket/udpsocket.i"
 	@echo "... socket/udpsocket.s"
