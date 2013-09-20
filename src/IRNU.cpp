@@ -5,17 +5,21 @@
 #include "rcp/irnu_rcp.hpp"
 #include "socket/udpsocket.h"
 #include <unistd.h>
+#include "variables.hpp"
+#include <string.h>
 
 std::vector<handler> l_handler;
+extern UDPSocket * con = new UDPSocket;
 
 void addHandler(handler h) {
 	l_handler.push_back(h);
 }
 
-void handle(unsigned char* data) {
+void handle(unsigned char* data, sockaddr_in addr) {
 	base_package bp;
 	bp.protocol = data[0];
 	bp.package = data[1];
+	bp.remote_addr = addr;
 	int i = 0;
 	for(i = 0; i < 254; ++i) {
 	  bp.data[i] = data[i + 2];
@@ -26,8 +30,11 @@ void handle(unsigned char* data) {
 }
 
 void printPackage(base_package bp) {
-	if(bp.protocol == PROTOCOL_RCP)
+	std::cout << "Received Package from: " << inet_ntoa(bp.remote_addr.sin_addr) << std::endl;
+	if(bp.protocol == PROTOCOL_RCP) {
 		std::cout << "Remote Control Protocol" << std::endl;
+		print_rcp_package(bp);
+	}
 	else if (bp.protocol == PROTOCOL_MTP)
 		std::cout << "Message Transfer Protocol" << std::endl;
 	else if (bp.protocol == PROTOCOL_FTP)
@@ -49,8 +56,7 @@ void printPackage(base_package bp) {
 }
 
 void test() {
-  UDPSocket udp;
-  udp.start_connection();
+  con->start_connection();
   base_package bp;
   bp.protocol = PROTOCOL_RCP;
   bp.package = 1;
@@ -65,25 +71,45 @@ void test() {
   if (inet_aton("127.0.0.1", &addr.sin_addr) == 0)
     std::cout << "Error: inet_aton()" << std::endl;
   bp.remote_addr = addr;
-  udp << bp;
+  *con << bp;
   bp.protocol = PROTOCOL_IRTUTP;
-  udp << bp;
+  *con << bp;
+  bp.package = PACKAGE_RCP_RESULT;
+  bp.protocol = PROTOCOL_RCP;
+  bp.data[0] = 0;
+  *con << bp;
+  /*rcp_package_request * req = (rcp_package_request *) &bp;
+  req->u_name[0] = 'f';
+  req->u_name[1] = 'e';
+  req->u_name[2] = 'l';
+  req->u_name[3] = 'i';
+  req->u_name[4] = 'x';
+  req->u_name[5] = 0;
+  req->pass[0] = 't';
+  req->pass[1] = 'e';
+  req->pass[2] = 's';
+  req->pass[3] = 't';
+  req->pass[4] = 0;
+  req->package = PACKAGE_RCP_REQUEST;
+  *con << bp;*/
+  request_rcp_login("felix", "test", addr);
   sleep(3);
-  base_package bp_;
-  bp_.data[0] = 0x02;
-  bp_.protocol = PROTOCOL_RCP;
-  bp_.package = PACKAGE_RCP_ACK;
-  rcp_package_ack * ack = (rcp_package_ack *) &bp_;
-  std::cout << "ACK for pack:" << (int)(ack->ack_package) << std::endl;
+  exit_session(addr);
+  sleep(2);
+}
+
+bool check_login_test(char * u_name, char * pass) {
+  if(strcmp(u_name, "felix") == 0 && strcmp(pass, "test") == 0) {
+    return true;
+  }
+  return false;
 }
 
 int main() {
 	std::cout << "Hello" << std::endl;
 	addHandler(printPackage);
-	unsigned char msg[256];
-	msg[0] = PROTOCOL_CCP;
-	msg[1] = 1;
-	handle(msg);
+	add_rcp_handler();
+	set_login_check(check_login_test);
 	test();
 	return 0;
 }

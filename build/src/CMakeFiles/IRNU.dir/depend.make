@@ -6,6 +6,13 @@ src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/IRNU.hpp
 src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/rcp/../IRNU.hpp
 src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/rcp/irnu_rcp.hpp
 src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/socket/udpsocket.h
+src/CMakeFiles/IRNU.dir/IRNU.cpp.o: ../src/variables.hpp
+
+src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_req.cpp.o: ../src/rcp/../IRNU.hpp
+src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_req.cpp.o: ../src/rcp/../socket/udpsocket.h
+src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_req.cpp.o: ../src/rcp/../variables.hpp
+src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_req.cpp.o: ../src/rcp/irnu_rcp.hpp
+src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_req.cpp.o: ../src/rcp/irnu_rcp_req.cpp
 
 src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_util.cpp.o: ../src/rcp/../IRNU.hpp
 src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_util.cpp.o: ../src/rcp/irnu_rcp.hpp

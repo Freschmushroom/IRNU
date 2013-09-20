@@ -11,6 +11,13 @@ const unsigned char PACKAGE_RCP_REQUEST = 0x03;
 const unsigned char PACKAGE_RCP_COMMAND = 0x04;
 const unsigned char PACKAGE_RCP_RESULT = 0x05;
 
+const unsigned char RCP_STATE_NONE = 0x00;
+const unsigned char RCP_STATE_OK = 0x01;
+const unsigned char RCP_STATE_WAIT_ACK_REQUEST = 0x02;
+const unsigned char RCP_STATE_WAIT_RESULT_REQUEST = 0x03;
+const unsigned char RCP_STATE_WAIT_ACK_EXIT = 0x04;
+
+
 typedef struct rcp_package_ack_struct {
   unsigned char protocol = PROTOCOL_RCP;
   unsigned char package = PACKAGE_RCP_ACK;
@@ -53,16 +60,27 @@ typedef struct rcp_package_result_struct {
   struct sockaddr_in remote_addr;
 } rcp_package_result;
 
-void rcp_ack(base_package *, rcp_package_ack *);
-void rcp_exit(base_package *, rcp_package_exit *);
-void rcp_request(base_package *, rcp_package_request *);
-void rcp_command(base_package *, rcp_package_command *);
-void rcp_result(base_package *, rcp_package_result *);
+void rcp_ack(base_package *, rcp_package_ack *);	//Convert base_package to rcp_package_ack
+void rcp_exit(base_package *, rcp_package_exit *);	//Convert base_package to rcp_package_exit
+void rcp_request(base_package *, rcp_package_request *);//Convert base_package to rcp_package_request
+void rcp_command(base_package *, rcp_package_command *);//Convert base_package to rcp_package_command
+void rcp_result(base_package *, rcp_package_result *);	//Convert base_package to rcp_package_result
 
-void rcp_ack(rcp_package_ack *, base_package *);
-void rcp_exit(rcp_package_exit *, base_package *);
-void rcp_request(rcp_package_request *, base_package *);
-void rcp_command(rcp_package_command *, base_package *);
-void rcp_result(rcp_package_result *, base_package *);
+void rcp_ack(rcp_package_ack *, base_package *);	//Convert rcp_package_ack to base_package
+void rcp_exit(rcp_package_exit *, base_package *);	//Convert rcp_package_exit to base_package
+void rcp_request(rcp_package_request *, base_package *);//Convert rcp_package_request to base_package
+void rcp_command(rcp_package_command *, base_package *);//Convert rcp_package_command to base_package
+void rcp_result(rcp_package_result *, base_package *);	//Convert rcp_package_result to base_package
+
+void print_rcp_package(base_package);
+
+typedef bool (* check_login)(char *, char *);
+
+void set_login_check(check_login);
+void add_rcp_login_handler();
+void add_rcp_handler();
+
+void request_rcp_login(char *, char *, sockaddr_in);
+void exit_session(sockaddr_in);
 
 #endif

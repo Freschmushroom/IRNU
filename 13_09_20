@@ -1,0 +1,4 @@
+Changes:
+	-Added RCP package print method
+	-Added RCP_Request functionality
+	-Added RCP_Exit functionality

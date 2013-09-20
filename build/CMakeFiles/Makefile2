@@ -82,7 +82,7 @@ src/preinstall: src/rcp/preinstall
 src/CMakeFiles/IRNU.dir/all:
 	$(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/depend
 	$(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/felix/projects/IRNU.git/build/CMakeFiles  1 2 3
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/felix/projects/IRNU.git/build/CMakeFiles  1 2 3 4
 	@echo "Built target IRNU"
 .PHONY : src/CMakeFiles/IRNU.dir/all
 
@@ -92,7 +92,7 @@ all: src/CMakeFiles/IRNU.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/IRNU.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/IRNU.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 0
 .PHONY : src/CMakeFiles/IRNU.dir/rule

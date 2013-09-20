@@ -49,5 +49,6 @@ public:
     bool start_connection();
     unsigned int get_sockfd();
 };
+
 void * fetch_input(void * arg);
 #endif // UDPSOCKET_H

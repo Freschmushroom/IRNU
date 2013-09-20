@@ -1,6 +1,8 @@
 
 #include "irnu_rcp.hpp"
 
+#include <iostream>
+
 void rcp_ack(base_package * bp, rcp_package_ack * ack) {
   ack->package = bp->package;
   ack->protocol = bp->protocol;
@@ -121,4 +123,29 @@ void rcp_result(rcp_package_result * res, base_package * bp) {
      bp->data[i + 1] = res->data[i];
   }
   bp->remote_addr = res->remote_addr;
+}
+
+void print_rcp_package(base_package bp) {
+  if(bp.protocol != PROTOCOL_RCP)
+    return;
+  if(bp.package == PACKAGE_RCP_ACK) {
+    rcp_package_ack * ack = (rcp_package_ack *) & bp;
+    std::cout << "Acknoledgement Package" << std::endl << "\tAcknoledged Package: " << (int)ack->ack_package << std::endl;
+  } else if (bp.package == PACKAGE_RCP_EXIT) {
+    rcp_package_exit * exit = (rcp_package_exit *) & bp;
+    std::cout << "Exit Package" << std::endl << "\tHour: " << (int)exit->hour << std::endl << "\tMinute: " << (int)exit->minute << std::endl << "\tSecond: " << (int)exit->second << std::endl;
+  } else if (bp.package == PACKAGE_RCP_REQUEST) {
+    rcp_package_request * req = (rcp_package_request * ) & bp;
+    std::cout << "Request Package" << std::endl << "\tUsername: " << req->u_name << std::endl << "\tPassword: " << req->pass << std::endl;
+  } else if (bp.package == PACKAGE_RCP_COMMAND) {
+    rcp_package_command * com = (rcp_package_command * ) & bp;
+    std::cout << "Command Package" << std::endl << "\tData: " << com->data << std::endl;
+  } else if (bp.package == PACKAGE_RCP_RESULT) {
+    rcp_package_result * res = (rcp_package_result * ) & bp;
+    std::cout << "Result Package" << std::endl << "\tError Code: " << (int)res->err_code << std::endl << "\tOther Data: " << res->data << std::endl;
+  }
+}
+
+void add_rcp_handler() {
+  add_rcp_login_handler();
 }

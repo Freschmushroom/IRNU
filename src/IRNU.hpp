@@ -12,15 +12,16 @@ const unsigned char PROTOCOL_KTP = 0x06;
 const unsigned char PROTOCOL_ECP = 0x07;
 
 typedef struct base_package_struct {
-	unsigned char protocol;
-	unsigned char package;
-	unsigned char data[254];
-	struct sockaddr_in remote_addr;
+    unsigned char protocol;
+    unsigned char package;
+    unsigned char data[254];
+    struct sockaddr_in remote_addr;
 } base_package;
 
-typedef void (* handler)(base_package);
+typedef void ( * handler ) ( base_package );
 
-void addHandler(handler);
+void addHandler ( handler );
 
-void handle(unsigned char[]);
+void handle ( unsigned char[], sockaddr_in addr );
+
 #endif

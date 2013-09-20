@@ -55,13 +55,13 @@ void * fetch_input(void * arg) {
   cout << "   [Finished]" << endl;
   while(1) {
     bzero(buff, BUFLEN);
-    base_package bp;
-    socklen_t slen = sizeof(bp.remote_addr);
-    if(recvfrom((*sockfd), buff, BUFLEN, 0, (struct sockaddr*) &bp.remote_addr, &slen) == -1)
+    struct sockaddr_in addr;
+    socklen_t slen = sizeof(addr);
+    if(recvfrom((*sockfd), buff, BUFLEN, 0, (struct sockaddr*) &addr, &slen) == -1)
       cout << "Error: While Receiving" << endl;
     else
       cout << "Info: Received" << endl;
-    handle(buff);
+    handle(buff, addr);
   }
 }
 
