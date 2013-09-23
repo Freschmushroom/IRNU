@@ -6,10 +6,12 @@
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
+#include <vector>
 
+std::vector<sockaddr_in> allowed;
 check_login check;
 handle_command cmd;
-extern int state = RCP_STATE_NONE;
+extern int rcp_state = RCP_STATE_NONE;
 
 void set_login_check ( check_login cl ) {
     if ( cl != NULL )
@@ -36,6 +38,7 @@ void handle_rcp_request ( base_package bp ) {
             res.remote_addr = bp.remote_addr;
             bp_ = ( base_package * ) &res;
             std::cout << "Access Granted" << std::endl;
+            allowed.push_back ( req->remote_addr );
             *con << ( *bp_ );
         } else {
             rcp_package_result res;
@@ -49,7 +52,7 @@ void handle_rcp_request ( base_package bp ) {
 }
 
 void request_rcp_login ( char * u_name, char * pass, sockaddr_in remote_addr ) {
-    if ( state != RCP_STATE_NONE )
+    if ( rcp_state != RCP_STATE_NONE )
         return;
     base_package bp;
     rcp_package_request * req = ( rcp_package_request * ) &bp;
@@ -72,16 +75,16 @@ void request_rcp_login ( char * u_name, char * pass, sockaddr_in remote_addr ) {
     }
     req->remote_addr = remote_addr;
     *con << bp;
-    state = RCP_STATE_WAIT_ACK_REQUEST;
+    rcp_state = RCP_STATE_WAIT_ACK_REQUEST;
 }
 
 void handle_rcp_ack ( base_package bp ) {
     if ( bp.protocol == PROTOCOL_RCP && bp.package == PACKAGE_RCP_ACK ) {
         rcp_package_ack * ack = ( rcp_package_ack * ) & bp;
-        if ( ack->ack_package == PACKAGE_RCP_REQUEST && state == RCP_STATE_WAIT_ACK_REQUEST ) {
-            state = RCP_STATE_WAIT_RESULT_REQUEST;
+        if ( ack->ack_package == PACKAGE_RCP_REQUEST && rcp_state == RCP_STATE_WAIT_ACK_REQUEST ) {
+            rcp_state = RCP_STATE_WAIT_RESULT_REQUEST;
             std::cout << "Received Acknowledgement for Login Request" << std::endl;
-        } else if ( ack->ack_package == PACKAGE_RCP_EXIT && state == RCP_STATE_OK ) {
+        } else if ( ack->ack_package == PACKAGE_RCP_EXIT && rcp_state == RCP_STATE_OK ) {
             base_package bp_;
             rcp_package_ack * ack_ = ( rcp_package_ack * ) &bp_;
             ack_->ack_package = PACKAGE_RCP_ACK;
@@ -89,11 +92,16 @@ void handle_rcp_ack ( base_package bp ) {
             ack_->package = PACKAGE_RCP_ACK;
             ack_->protocol = PROTOCOL_RCP;
             *con << bp_;
-            state = RCP_STATE_NONE;
+            rcp_state = RCP_STATE_NONE;
         } else if ( ack->ack_package == PACKAGE_RCP_ACK ) {
-            //TODO Remove authentificated address from list
+            int i;
+            for ( i = 0; i < allowed.size(); ++i ) {
+                if ( allowed[i].sin_addr.s_addr == ack->remote_addr.sin_addr.s_addr ) {
+                    allowed.erase ( allowed.begin() + i );
+                }
+            }
         } else if ( ack->ack_package == PACKAGE_RCP_COMMAND ) {
-            state = RCP_STATE_WAIT_RESULT_COMMAND;
+            rcp_state = RCP_STATE_WAIT_RESULT_COMMAND;
             std::cout << "Command was Acknowledged" << std::endl;
         } else if ( ack->ack_package == PACKAGE_RCP_RESULT ) {
             std::cout << "Result was Acknowledged" << std::endl;
@@ -104,13 +112,13 @@ void handle_rcp_ack ( base_package bp ) {
 void handle_rcp_result ( base_package bp ) {
     if ( bp.protocol == PROTOCOL_RCP && bp.package == PACKAGE_RCP_RESULT ) {
         rcp_package_result * res = ( rcp_package_result * ) &bp;
-        if ( state == RCP_STATE_WAIT_RESULT_REQUEST ) {
+        if ( rcp_state == RCP_STATE_WAIT_RESULT_REQUEST ) {
             if ( res->err_code == 0 ) {
                 std::cout << "Access granted" << std::endl;
-                state = RCP_STATE_OK;
+                rcp_state = RCP_STATE_OK;
             } else {
                 std::cout << "Authentification failed" << std::endl;
-                state = RCP_STATE_NONE;
+                rcp_state = RCP_STATE_NONE;
             }
             base_package bp_;
             rcp_package_ack * ack = ( rcp_package_ack * ) &bp_;
@@ -119,7 +127,7 @@ void handle_rcp_result ( base_package bp ) {
             ack->package = PACKAGE_RCP_ACK;
             ack->remote_addr = res->remote_addr;
             *con << bp_;
-        } else if ( state == RCP_STATE_WAIT_RESULT_COMMAND ) {
+        } else if ( rcp_state == RCP_STATE_WAIT_RESULT_COMMAND ) {
             base_package bp_;
             rcp_package_ack * ack = ( rcp_package_ack * ) &bp_;
             ack->ack_package = res->package;
@@ -175,8 +183,18 @@ unsigned int _strlen ( unsigned char * str ) {
 
 void handle_rcp_command ( base_package bp ) {
     if ( bp.protocol == PROTOCOL_RCP && bp.package == PACKAGE_RCP_COMMAND ) {
-        rcp_package_command * com = ( rcp_package_command * ) &bp;
+        bool _allowed = false;
         unsigned int _pos, i;
+        for ( i = 0; i < allowed.size(); ++i ) {
+            if ( allowed[i].sin_addr.s_addr == bp.remote_addr.sin_addr.s_addr ) {
+                _allowed = true;
+                break;
+            }
+        }
+        if ( _allowed == false )
+            return;
+        rcp_package_command * com = ( rcp_package_command * ) &bp;
+
         _pos = _strlen ( com->data );
         unsigned char cmd_[_pos];
         for ( i = 0; i < _pos; ++i ) {
@@ -231,7 +249,7 @@ void send_command ( unsigned char * cmd, unsigned char ** args, unsigned int arg
         pos += _pos;
     }
     *con << bp;
-    state = RCP_STATE_WAIT_ACK_COMMAND;
+    rcp_state = RCP_STATE_WAIT_ACK_COMMAND;
 }
 
 void add_rcp_login_handler() {
