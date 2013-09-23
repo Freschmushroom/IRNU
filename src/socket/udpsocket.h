@@ -1,5 +1,5 @@
 /*
- * 
+ *
     Copyright 2013 Felix Resch <email>
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,10 +45,10 @@ private:
 public:
     UDPSocket();
     virtual ~UDPSocket();
-    UDPSocket& operator<<(base_package bp);
+    UDPSocket& operator<< ( base_package bp );
     bool start_connection();
     unsigned int get_sockfd();
 };
 
-void * fetch_input(void * arg);
+void * fetch_input ( void * arg );
 #endif // UDPSOCKET_H

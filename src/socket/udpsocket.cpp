@@ -24,11 +24,11 @@
 #include <string.h>
 
 UDPSocket::UDPSocket() {
-    
+
 }
 
 UDPSocket::~UDPSocket() {
-  pthread_cancel(input_id);
+    pthread_cancel ( input_id );
 }
 
 using std::string;
@@ -37,46 +37,46 @@ using std::endl;
 using std::vector;
 
 UDPSocket& UDPSocket::operator<< ( base_package bp ) {
-    bzero(buf, BUFLEN);
+    bzero ( buf, BUFLEN );
     buf[0] = bp.protocol;
     buf[1] = bp.package;
     int i;
-    for(i = 0; i < 254; i++) {
-      buf[2 + i] = bp.data[i];
+    for ( i = 0; i < 254; i++ ) {
+        buf[2 + i] = bp.data[i];
     }
-    if(sendto(sockfd, buf, BUFLEN, 0, (struct sockaddr*) &bp.remote_addr, sizeof(bp.remote_addr)) == -1)
-      cout << "Error: Sending to " << sockfd << " failed!" << endl;
+    if ( sendto ( sockfd, buf, BUFLEN, 0, ( struct sockaddr* ) &bp.remote_addr, sizeof ( bp.remote_addr ) ) == -1 )
+        cout << "Error: Sending to " << sockfd << " failed!" << endl;
 }
 
-void * fetch_input(void * arg) {
-  cout << "Task: Initializing new Message Receiving Thread";
-  int * sockfd = (int*) arg;
-  unsigned char buff[BUFLEN];
-  cout << "   [Finished]" << endl;
-  while(1) {
-    bzero(buff, BUFLEN);
-    struct sockaddr_in addr;
-    socklen_t slen = sizeof(addr);
-    if(recvfrom((*sockfd), buff, BUFLEN, 0, (struct sockaddr*) &addr, &slen) == -1)
-      cout << "Error: While Receiving" << endl;
-    else
-      cout << "Info: Received" << endl;
-    handle(buff, addr);
-  }
+void * fetch_input ( void * arg ) {
+    cout << "Task: Initializing new Message Receiving Thread";
+    int * sockfd = ( int* ) arg;
+    unsigned char buff[BUFLEN];
+    cout << "   [Finished]" << endl;
+    while ( 1 ) {
+        bzero ( buff, BUFLEN );
+        struct sockaddr_in addr;
+        socklen_t slen = sizeof ( addr );
+        if ( recvfrom ( ( *sockfd ), buff, BUFLEN, 0, ( struct sockaddr* ) &addr, &slen ) == -1 )
+            cout << "Error: While Receiving" << endl;
+        else;
+        //cout << "Info: Received" << endl;
+        handle ( buff, addr );
+    }
 }
 
 bool UDPSocket::start_connection () {
-    socklen_t slen = sizeof(local_addr);
-    if((sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
-      cout << "Error: Creating Socket" << endl;
-    bzero(&local_addr, sizeof(local_addr));
+    socklen_t slen = sizeof ( local_addr );
+    if ( ( sockfd = socket ( AF_INET, SOCK_DGRAM, IPPROTO_UDP ) ) == -1 )
+        cout << "Error: Creating Socket" << endl;
+    bzero ( &local_addr, sizeof ( local_addr ) );
     local_addr.sin_family = AF_INET;
-    local_addr.sin_port = htons(PORT);
-    local_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    if(bind(sockfd, (struct sockaddr*) &local_addr, sizeof(local_addr)) == -1)
-      cout << "Error: Binding Socket" << endl;
+    local_addr.sin_port = htons ( PORT );
+    local_addr.sin_addr.s_addr = htonl ( INADDR_ANY );
+    if ( bind ( sockfd, ( struct sockaddr* ) &local_addr, sizeof ( local_addr ) ) == -1 )
+        cout << "Error: Binding Socket" << endl;
     cout << "Info: Starting new Message Receiving Thread" << endl;
-    int err = pthread_create(&input_id, NULL, &fetch_input, (void*)&sockfd);
+    int err = pthread_create ( &input_id, NULL, &fetch_input, ( void* ) &sockfd );
     cout << "Created Thread with code: " << err << endl;
 }
 

@@ -1,0 +1,6 @@
+Changes:
+  -Added RCP_Command Support
+  -Removed Debug Output
+
+Plans:
+  -Adding List for allowed addresses
