@@ -1,0 +1,31 @@
+
+#include <iostream>
+#include <stdio.h>
+#include "../IRNU.hpp"
+#include "../rcp/irnu_rcp.hpp"
+#include "../socket/udpsocket.h"
+#include <src/variables.hpp>
+#include <string.h>
+
+bool login (char * u_name, char * pass, sockaddr_in remote_address) {
+  if(strcmp(u_name, "felix") == 0 && strcmp(pass, "test") == 0)
+    return true;
+}
+
+bool cmd_handler (unsigned char * cmd, unsigned char **, int, sockaddr_in remote_address) {
+  if(cmd[0] == 'h' && cmd[1] == 'i' && cmd[2] == 0) {
+    unsigned char other[3];
+    other[0] = 'h';
+    other[1] = 'i';
+    other[2] = 0;
+    send_result(0, other, remote_address);
+  } else {
+    send_result(1, NULL, remote_address);
+  }
+}
+
+int main() {
+  set_command_handle(cmd_handler);
+  set_login_check(login);
+  con->start_connection();
+}

@@ -101,137 +101,14 @@ depend:
 	cd /home/felix/projects/IRNU.git/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-src/CMakeFiles/IRNU.dir/rule:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/IRNU.dir/rule
-.PHONY : src/CMakeFiles/IRNU.dir/rule
-
-# Convenience name for target.
-IRNU: src/CMakeFiles/IRNU.dir/rule
-.PHONY : IRNU
-
-# fast build rule for target.
-IRNU/fast:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/build
-.PHONY : IRNU/fast
-
-IRNU.o: IRNU.cpp.o
-.PHONY : IRNU.o
-
-# target to build an object file
-IRNU.cpp.o:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/IRNU.cpp.o
-.PHONY : IRNU.cpp.o
-
-IRNU.i: IRNU.cpp.i
-.PHONY : IRNU.i
-
-# target to preprocess a source file
-IRNU.cpp.i:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/IRNU.cpp.i
-.PHONY : IRNU.cpp.i
-
-IRNU.s: IRNU.cpp.s
-.PHONY : IRNU.s
-
-# target to generate assembly for a file
-IRNU.cpp.s:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/IRNU.cpp.s
-.PHONY : IRNU.cpp.s
-
-rcp/irnu_rcp_req.o: rcp/irnu_rcp_req.cpp.o
-.PHONY : rcp/irnu_rcp_req.o
-
-# target to build an object file
-rcp/irnu_rcp_req.cpp.o:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_req.cpp.o
-.PHONY : rcp/irnu_rcp_req.cpp.o
-
-rcp/irnu_rcp_req.i: rcp/irnu_rcp_req.cpp.i
-.PHONY : rcp/irnu_rcp_req.i
-
-# target to preprocess a source file
-rcp/irnu_rcp_req.cpp.i:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_req.cpp.i
-.PHONY : rcp/irnu_rcp_req.cpp.i
-
-rcp/irnu_rcp_req.s: rcp/irnu_rcp_req.cpp.s
-.PHONY : rcp/irnu_rcp_req.s
-
-# target to generate assembly for a file
-rcp/irnu_rcp_req.cpp.s:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_req.cpp.s
-.PHONY : rcp/irnu_rcp_req.cpp.s
-
-rcp/irnu_rcp_util.o: rcp/irnu_rcp_util.cpp.o
-.PHONY : rcp/irnu_rcp_util.o
-
-# target to build an object file
-rcp/irnu_rcp_util.cpp.o:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_util.cpp.o
-.PHONY : rcp/irnu_rcp_util.cpp.o
-
-rcp/irnu_rcp_util.i: rcp/irnu_rcp_util.cpp.i
-.PHONY : rcp/irnu_rcp_util.i
-
-# target to preprocess a source file
-rcp/irnu_rcp_util.cpp.i:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_util.cpp.i
-.PHONY : rcp/irnu_rcp_util.cpp.i
-
-rcp/irnu_rcp_util.s: rcp/irnu_rcp_util.cpp.s
-.PHONY : rcp/irnu_rcp_util.s
-
-# target to generate assembly for a file
-rcp/irnu_rcp_util.cpp.s:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/rcp/irnu_rcp_util.cpp.s
-.PHONY : rcp/irnu_rcp_util.cpp.s
-
-socket/udpsocket.o: socket/udpsocket.cpp.o
-.PHONY : socket/udpsocket.o
-
-# target to build an object file
-socket/udpsocket.cpp.o:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.o
-.PHONY : socket/udpsocket.cpp.o
-
-socket/udpsocket.i: socket/udpsocket.cpp.i
-.PHONY : socket/udpsocket.i
-
-# target to preprocess a source file
-socket/udpsocket.cpp.i:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.i
-.PHONY : socket/udpsocket.cpp.i
-
-socket/udpsocket.s: socket/udpsocket.cpp.s
-.PHONY : socket/udpsocket.s
-
-# target to generate assembly for a file
-socket/udpsocket.cpp.s:
-	cd /home/felix/projects/IRNU.git/build && $(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/socket/udpsocket.cpp.s
-.PHONY : socket/udpsocket.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... IRNU"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... IRNU.o"
-	@echo "... IRNU.i"
-	@echo "... IRNU.s"
-	@echo "... rcp/irnu_rcp_req.o"
-	@echo "... rcp/irnu_rcp_req.i"
-	@echo "... rcp/irnu_rcp_req.s"
-	@echo "... rcp/irnu_rcp_util.o"
-	@echo "... rcp/irnu_rcp_util.i"
-	@echo "... rcp/irnu_rcp_util.s"
-	@echo "... socket/udpsocket.o"
-	@echo "... socket/udpsocket.i"
-	@echo "... socket/udpsocket.s"
 .PHONY : help
 
 

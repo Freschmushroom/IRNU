@@ -18,7 +18,7 @@ const unsigned char RCP_STATE_WAIT_RESULT_REQUEST = 0x03;
 const unsigned char RCP_STATE_WAIT_ACK_EXIT = 0x04;
 const unsigned char RCP_STATE_WAIT_ACK_COMMAND = 0x05;
 const unsigned char RCP_STATE_WAIT_RESULT_COMMAND = 0x06;
-
+const unsigned char RCP_STATE_WAIT_ACK_RESULT = 0x07;
 
 
 typedef struct rcp_package_ack_struct {
@@ -78,8 +78,8 @@ void rcp_result ( rcp_package_result *, base_package * );	//Convert rcp_package_
 
 void print_rcp_package ( base_package );
 
-typedef bool ( * check_login ) ( char *, char * );
-typedef bool ( * handle_command ) ( unsigned char *, unsigned char **, int );
+typedef bool ( * check_login ) ( char *, char *, sockaddr_in );
+typedef bool ( * handle_command ) ( unsigned char *, unsigned char **, int, sockaddr_in );
 
 void set_login_check ( check_login );
 void set_command_handle ( handle_command );
@@ -89,4 +89,9 @@ void add_rcp_handler();
 void request_rcp_login ( char *, char *, sockaddr_in );
 void exit_session ( sockaddr_in );
 void send_command ( unsigned char *, unsigned char **, unsigned int, sockaddr_in );
+void send_result ( unsigned char, unsigned char *, sockaddr_in);
+void cancel_rcp_timeout();
+
+bool is_rcp_waiting();
+unsigned char get_rcp_state();
 #endif

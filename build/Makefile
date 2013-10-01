@@ -102,17 +102,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named IRNU
+# Target rules for targets named client
 
 # Build rule for target.
-IRNU: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 IRNU
-.PHONY : IRNU
+client: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 client
+.PHONY : client
 
 # fast build rule for target.
-IRNU/fast:
-	$(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/build
-.PHONY : IRNU/fast
+client/fast:
+	$(MAKE) -f src/test/CMakeFiles/client.dir/build.make src/test/CMakeFiles/client.dir/build
+.PHONY : client/fast
+
+#=============================================================================
+# Target rules for targets named server
+
+# Build rule for target.
+server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 server
+.PHONY : server
+
+# fast build rule for target.
+server/fast:
+	$(MAKE) -f src/test/CMakeFiles/server.dir/build.make src/test/CMakeFiles/server.dir/build
+.PHONY : server/fast
 
 # Help Target
 help:
@@ -122,7 +135,8 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... IRNU"
+	@echo "... client"
+	@echo "... server"
 .PHONY : help
 
 

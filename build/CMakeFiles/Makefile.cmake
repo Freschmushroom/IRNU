@@ -14,6 +14,7 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "../src/CMakeLists.txt"
   "../src/rcp/CMakeLists.txt"
   "../src/socket/CMakeLists.txt"
+  "../src/test/CMakeLists.txt"
   "/usr/share/cmake/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake"
@@ -49,9 +50,11 @@ SET(CMAKE_MAKEFILE_PRODUCTS
   "src/CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/socket/CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/rcp/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/test/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
-  "src/CMakeFiles/IRNU.dir/DependInfo.cmake"
+  "src/test/CMakeFiles/client.dir/DependInfo.cmake"
+  "src/test/CMakeFiles/server.dir/DependInfo.cmake"
   )

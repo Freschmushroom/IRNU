@@ -1,1 +1,2 @@
-/home/felix/projects/IRNU.git/build/src/CMakeFiles/IRNU.dir
+/home/felix/projects/IRNU.git/build/src/test/CMakeFiles/client.dir
+/home/felix/projects/IRNU.git/build/src/test/CMakeFiles/server.dir

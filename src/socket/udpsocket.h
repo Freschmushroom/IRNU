@@ -34,7 +34,12 @@
 #include <pthread.h>
 
 #define BUFLEN 256
-#define PORT 9980
+#ifndef __client__
+  #define PORT 9980
+#endif
+#ifdef __client__
+  #define PORT 9981
+#endif
 
 class UDPSocket {
 private:
@@ -48,6 +53,7 @@ public:
     UDPSocket& operator<< ( base_package bp );
     bool start_connection();
     unsigned int get_sockfd();
+    void join();
 };
 
 void * fetch_input ( void * arg );

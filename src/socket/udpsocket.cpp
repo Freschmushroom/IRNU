@@ -44,8 +44,11 @@ UDPSocket& UDPSocket::operator<< ( base_package bp ) {
     for ( i = 0; i < 254; i++ ) {
         buf[2 + i] = bp.data[i];
     }
-    if ( sendto ( sockfd, buf, BUFLEN, 0, ( struct sockaddr* ) &bp.remote_addr, sizeof ( bp.remote_addr ) ) == -1 )
-        cout << "Error: Sending to " << sockfd << " failed!" << endl;
+    if ( sendto ( sockfd, buf, BUFLEN, 0, ( struct sockaddr* ) &bp.remote_addr, sizeof ( bp.remote_addr ) ) == -1 ) {
+/*        cout << "Error: Sending to " << sockfd << " failed!" << endl;
+	cout << strerror(errno) << endl;
+	cout << (int) bp.protocol << " " << (int) bp.package << " "  << inet_ntoa(bp.remote_addr.sin_addr) << std::endl;*/
+    }
 }
 
 void * fetch_input ( void * arg ) {
@@ -60,7 +63,6 @@ void * fetch_input ( void * arg ) {
         if ( recvfrom ( ( *sockfd ), buff, BUFLEN, 0, ( struct sockaddr* ) &addr, &slen ) == -1 )
             cout << "Error: While Receiving" << endl;
         else;
-        //cout << "Info: Received" << endl;
         handle ( buff, addr );
     }
 }
@@ -70,18 +72,23 @@ bool UDPSocket::start_connection () {
     if ( ( sockfd = socket ( AF_INET, SOCK_DGRAM, IPPROTO_UDP ) ) == -1 )
         cout << "Error: Creating Socket" << endl;
     bzero ( &local_addr, sizeof ( local_addr ) );
+    cout << "Listening on " << PORT << endl;
     local_addr.sin_family = AF_INET;
     local_addr.sin_port = htons ( PORT );
     local_addr.sin_addr.s_addr = htonl ( INADDR_ANY );
     if ( bind ( sockfd, ( struct sockaddr* ) &local_addr, sizeof ( local_addr ) ) == -1 )
         cout << "Error: Binding Socket" << endl;
-    cout << "Info: Starting new Message Receiving Thread" << endl;
+    //cout << "Info: Starting new Message Receiving Thread" << endl;
     int err = pthread_create ( &input_id, NULL, &fetch_input, ( void* ) &sockfd );
-    cout << "Created Thread with code: " << err << endl;
+    //cout << "Created Thread with code: " << err << endl;
 }
 
 unsigned int UDPSocket::get_sockfd() {
     return sockfd;
+}
+
+void UDPSocket::join() {
+    pthread_join(input_id, NULL);
 }
 
 

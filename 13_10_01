@@ -1,0 +1,8 @@
+Changes:
+  -Fixed all known bugs in RCP
+  -Added test server and client
+  -RCP is now completed
+  
+Plans:
+  -Add  more handlers
+  -Split up source files

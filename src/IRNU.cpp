@@ -20,6 +20,7 @@ void handle ( unsigned char* data, sockaddr_in addr ) {
     bp.protocol = data[0];
     bp.package = data[1];
     bp.remote_addr = addr;
+    bzero(bp.data, 254);
     int i = 0;
     for ( i = 0; i < 254; ++i ) {
         bp.data[i] = data[i + 2];
@@ -78,7 +79,7 @@ void test() {
     bp.data[0] = 0;
     *con << bp;
     request_rcp_login ( "felix", "test", addr );
-    sleep ( 3 );
+    sleep ( 1 );
     unsigned char cmd[6];
     cmd[0] = 'h';
     cmd[1] = 'e';
@@ -89,24 +90,28 @@ void test() {
     send_command ( cmd, NULL, 0, addr );
     sleep ( 1 );
     exit_session ( addr );
-    sleep ( 2 );
+    sleep ( 1 );
 }
 
-bool check_login_test ( char * u_name, char * pass ) {
+bool check_login_test ( char * u_name, char * pass, sockaddr_in ) {
     if ( strcmp ( u_name, "felix" ) == 0 && strcmp ( pass, "test" ) == 0 ) {
         return true;
     }
     return false;
 }
 
-bool handle_command_test ( unsigned char * cmd, unsigned char ** args, int arg_count ) {
+bool handle_command_test ( unsigned char * cmd, unsigned char ** args, int arg_count, sockaddr_in remote_addr ) {
     std::cout << "Handling Command: " << cmd << " with " << arg_count << " Args" << std::endl;
+    send_result(0, NULL, remote_addr);
 }
 
-int main() {
+#ifndef _no_main
+/*int main() {
     add_rcp_handler();
     set_login_check ( check_login_test );
     set_command_handle ( handle_command_test );
     test();
+    cancel_rcp_timeout();
     return 0;
-}
+}*/
+#endif

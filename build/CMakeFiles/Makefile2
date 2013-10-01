@@ -59,56 +59,22 @@ CMAKE_BINARY_DIR = /home/felix/projects/IRNU.git/build
 # Directory level rules for directory src
 
 # Convenience name for "all" pass in the directory.
-src/all: src/CMakeFiles/IRNU.dir/all
 src/all: src/socket/all
 src/all: src/rcp/all
+src/all: src/test/all
 .PHONY : src/all
 
 # Convenience name for "clean" pass in the directory.
-src/clean: src/CMakeFiles/IRNU.dir/clean
 src/clean: src/socket/clean
 src/clean: src/rcp/clean
+src/clean: src/test/clean
 .PHONY : src/clean
 
 # Convenience name for "preinstall" pass in the directory.
 src/preinstall: src/socket/preinstall
 src/preinstall: src/rcp/preinstall
+src/preinstall: src/test/preinstall
 .PHONY : src/preinstall
-
-#=============================================================================
-# Target rules for target src/CMakeFiles/IRNU.dir
-
-# All Build rule for target.
-src/CMakeFiles/IRNU.dir/all:
-	$(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/depend
-	$(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/felix/projects/IRNU.git/build/CMakeFiles  1 2 3 4
-	@echo "Built target IRNU"
-.PHONY : src/CMakeFiles/IRNU.dir/all
-
-# Include target in all.
-all: src/CMakeFiles/IRNU.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-src/CMakeFiles/IRNU.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/IRNU.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 0
-.PHONY : src/CMakeFiles/IRNU.dir/rule
-
-# Convenience name for target.
-IRNU: src/CMakeFiles/IRNU.dir/rule
-.PHONY : IRNU
-
-# clean rule for target.
-src/CMakeFiles/IRNU.dir/clean:
-	$(MAKE) -f src/CMakeFiles/IRNU.dir/build.make src/CMakeFiles/IRNU.dir/clean
-.PHONY : src/CMakeFiles/IRNU.dir/clean
-
-# clean rule for target.
-clean: src/CMakeFiles/IRNU.dir/clean
-.PHONY : clean
 
 #=============================================================================
 # Directory level rules for directory src/socket
@@ -139,6 +105,93 @@ src/rcp/clean:
 # Convenience name for "preinstall" pass in the directory.
 src/rcp/preinstall:
 .PHONY : src/rcp/preinstall
+
+#=============================================================================
+# Directory level rules for directory src/test
+
+# Convenience name for "all" pass in the directory.
+src/test/all: src/test/CMakeFiles/client.dir/all
+src/test/all: src/test/CMakeFiles/server.dir/all
+.PHONY : src/test/all
+
+# Convenience name for "clean" pass in the directory.
+src/test/clean: src/test/CMakeFiles/client.dir/clean
+src/test/clean: src/test/CMakeFiles/server.dir/clean
+.PHONY : src/test/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/test/preinstall:
+.PHONY : src/test/preinstall
+
+#=============================================================================
+# Target rules for target src/test/CMakeFiles/client.dir
+
+# All Build rule for target.
+src/test/CMakeFiles/client.dir/all:
+	$(MAKE) -f src/test/CMakeFiles/client.dir/build.make src/test/CMakeFiles/client.dir/depend
+	$(MAKE) -f src/test/CMakeFiles/client.dir/build.make src/test/CMakeFiles/client.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/felix/projects/IRNU.git/build/CMakeFiles  1 2 3 4 5
+	@echo "Built target client"
+.PHONY : src/test/CMakeFiles/client.dir/all
+
+# Include target in all.
+all: src/test/CMakeFiles/client.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/test/CMakeFiles/client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 src/test/CMakeFiles/client.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 0
+.PHONY : src/test/CMakeFiles/client.dir/rule
+
+# Convenience name for target.
+client: src/test/CMakeFiles/client.dir/rule
+.PHONY : client
+
+# clean rule for target.
+src/test/CMakeFiles/client.dir/clean:
+	$(MAKE) -f src/test/CMakeFiles/client.dir/build.make src/test/CMakeFiles/client.dir/clean
+.PHONY : src/test/CMakeFiles/client.dir/clean
+
+# clean rule for target.
+clean: src/test/CMakeFiles/client.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target src/test/CMakeFiles/server.dir
+
+# All Build rule for target.
+src/test/CMakeFiles/server.dir/all:
+	$(MAKE) -f src/test/CMakeFiles/server.dir/build.make src/test/CMakeFiles/server.dir/depend
+	$(MAKE) -f src/test/CMakeFiles/server.dir/build.make src/test/CMakeFiles/server.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/felix/projects/IRNU.git/build/CMakeFiles  6 7 8 9 10
+	@echo "Built target server"
+.PHONY : src/test/CMakeFiles/server.dir/all
+
+# Include target in all.
+all: src/test/CMakeFiles/server.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/test/CMakeFiles/server.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 src/test/CMakeFiles/server.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/felix/projects/IRNU.git/build/CMakeFiles 0
+.PHONY : src/test/CMakeFiles/server.dir/rule
+
+# Convenience name for target.
+server: src/test/CMakeFiles/server.dir/rule
+.PHONY : server
+
+# clean rule for target.
+src/test/CMakeFiles/server.dir/clean:
+	$(MAKE) -f src/test/CMakeFiles/server.dir/build.make src/test/CMakeFiles/server.dir/clean
+.PHONY : src/test/CMakeFiles/server.dir/clean
+
+# clean rule for target.
+clean: src/test/CMakeFiles/server.dir/clean
+.PHONY : clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
