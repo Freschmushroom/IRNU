@@ -9,8 +9,5 @@ link_directories(${IRNU_BUILD_DIR})
 add_subdirectory(socket)
 add_subdirectory(rcp)
 add_subdirectory(test)
-<<<<<<< HEAD
 add_subdirectory(enc)
-=======
 add_subdirectory(crypt)
->>>>>>> ff9e8d2f6ddbee85e20a7ea1b1d9805957750056

@@ -42,7 +42,7 @@
 #endif
 
 class UDPSocket {
-private:
+protected:
     struct sockaddr_in local_addr;
     unsigned int sockfd;
     char buf[BUFLEN];

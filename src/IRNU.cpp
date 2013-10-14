@@ -55,7 +55,7 @@ void printPackage ( base_package bp ) {
     std::cout << std::endl;
 }
 
-void test() {
+/*void test() {
     con->start_connection();
     base_package bp;
     bp.protocol = PROTOCOL_RCP;
@@ -91,7 +91,7 @@ void test() {
     sleep ( 1 );
     exit_session ( addr );
     sleep ( 1 );
-}
+}*/
 
 bool check_login_test ( char * u_name, char * pass, sockaddr_in ) {
     if ( strcmp ( u_name, "felix" ) == 0 && strcmp ( pass, "test" ) == 0 ) {

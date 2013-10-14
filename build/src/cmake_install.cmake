@@ -37,6 +37,7 @@ IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   INCLUDE("/home/felix/projects/IRNU.git/build/src/socket/cmake_install.cmake")
   INCLUDE("/home/felix/projects/IRNU.git/build/src/rcp/cmake_install.cmake")
   INCLUDE("/home/felix/projects/IRNU.git/build/src/test/cmake_install.cmake")
+  INCLUDE("/home/felix/projects/IRNU.git/build/src/enc/cmake_install.cmake")
   INCLUDE("/home/felix/projects/IRNU.git/build/src/crypt/cmake_install.cmake")
 
 ENDIF(NOT CMAKE_INSTALL_LOCAL_ONLY)
