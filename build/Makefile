@@ -127,6 +127,19 @@ server/fast:
 	$(MAKE) -f src/test/CMakeFiles/server.dir/build.make src/test/CMakeFiles/server.dir/build
 .PHONY : server/fast
 
+#=============================================================================
+# Target rules for targets named crypt_test
+
+# Build rule for target.
+crypt_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 crypt_test
+.PHONY : crypt_test
+
+# fast build rule for target.
+crypt_test/fast:
+	$(MAKE) -f src/crypt/test/CMakeFiles/crypt_test.dir/build.make src/crypt/test/CMakeFiles/crypt_test.dir/build
+.PHONY : crypt_test/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -137,6 +150,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... client"
 	@echo "... server"
+	@echo "... crypt_test"
 .PHONY : help
 
 

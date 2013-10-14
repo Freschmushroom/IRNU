@@ -12,6 +12,11 @@
 using std::cout;
 using std::endl;
 
+void shutdown (sockaddr_in addr) {
+  cout << "Shutting down Server on request of " << inet_ntoa(addr.sin_addr) << endl;
+  exit(0);
+}
+
 bool login (char * u_name, char * pass, sockaddr_in remote_address) {
   if(strcmp(u_name, "felix") == 0 && strcmp(pass, "test") == 0)
     return true;
@@ -32,7 +37,7 @@ bool cmd_handler (unsigned char * cmd, unsigned char **, int, sockaddr_in remote
   } else if (cmd[0] == 'r' && cmd[1] == 's' && cmd[2] == 0) {
     send_result(0, (unsigned char * )"Server will go down for reboot now! Please relogon!", remote_address);
     cout << endl << "Server will go down for restart now!" << endl << "Client will have to relogin and all transaction will be aborted!" << endl;
-    exit(0);
+    shutdown_server(remote_address);
   } else if (cmd[0] == 's' && cmd[1] == 't' && cmd[2] == 'a' && cmd[3] == 't' && cmd[4] == 0) {
     send_result(0, (unsigned char * ) "Server Running normally | No errors", remote_address);
     cout << "User at " << inet_ntoa(remote_address.sin_addr) << " requested Status Report" << endl;
@@ -47,6 +52,7 @@ int main() {
   try {
   set_command_handle(cmd_handler);
   set_login_check(login);
+  set_server_shutdown_handle(shutdown);
   add_rcp_handler();
   con->start_connection();
   sleep(1);

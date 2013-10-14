@@ -80,17 +80,23 @@ void print_rcp_package ( base_package );
 
 typedef bool ( * check_login ) ( char *, char *, sockaddr_in );
 typedef bool ( * handle_command ) ( unsigned char *, unsigned char **, int, sockaddr_in );
+typedef void ( * server_shutdown ) ( sockaddr_in );
+typedef void ( * client_end_connection ) ();
 
 void set_login_check ( check_login );
 void set_command_handle ( handle_command );
+void set_server_shutdown_handle ( server_shutdown );
+void set_client_end_connection ( client_end_connection );
 void add_rcp_login_handler();
 void add_rcp_handler();
 
 void request_rcp_login ( char *, char *, sockaddr_in );
 void exit_session ( sockaddr_in );
 void send_command ( unsigned char *, unsigned char **, unsigned int, sockaddr_in );
-void send_result ( unsigned char, unsigned char *, sockaddr_in);
+void send_result ( unsigned char, unsigned char *, sockaddr_in );
 void cancel_rcp_timeout();
+
+void shutdown_server(sockaddr_in);
 
 bool is_rcp_waiting();
 unsigned char get_rcp_state();

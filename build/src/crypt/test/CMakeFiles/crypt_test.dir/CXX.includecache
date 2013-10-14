@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/felix/projects/IRNU.git/src/crypt/test/crypt_test.cpp
+iostream
+-
+string.h
+-
+cryptopp/modes.h
+-
+cryptopp/aes.h
+-
+
