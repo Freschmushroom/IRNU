@@ -14,9 +14,17 @@ using std::endl;
 using std::cin;
 using std::string;
 
+void shutdown() {
+  cout << endl << "Server requested shutdown!" << endl;
+  cout << "Please restart application!" << endl;
+  cout << "Bye!" << endl;;
+  exit(0);
+}
+
 int main() {
     int count;
     add_rcp_handler();
+    set_client_end_connection(shutdown);
     con->start_connection();
     sleep ( 1 );
     struct sockaddr_in addr;

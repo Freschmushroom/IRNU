@@ -1,2 +1,3 @@
 /home/felix/projects/IRNU.git/build/src/test/CMakeFiles/client.dir
+/home/felix/projects/IRNU.git/build/src/crypt/test/CMakeFiles/crypt_test.dir
 /home/felix/projects/IRNU.git/build/src/test/CMakeFiles/server.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=gnu++11 -D__client__ -O2 -g -DNDEBUG    CMakeFiles/crypt_test.dir/crypt_test.cpp.o  -o crypt_test -rdynamic -lcryptopp -lpthread 

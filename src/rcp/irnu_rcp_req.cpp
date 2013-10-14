@@ -12,6 +12,8 @@
 std::vector<sockaddr_in> allowed;
 check_login check;
 handle_command cmd;
+server_shutdown serv_shut;
+client_end_connection cli_end_con;
 extern int rcp_state = RCP_STATE_NONE;
 bool rcp_waiting = false;
 bool end = false;
@@ -27,6 +29,16 @@ void set_login_check ( check_login cl ) {
 void set_command_handle ( handle_command hc ) {
     if ( hc != NULL )
         cmd = hc;
+}
+
+void set_server_shutdown_handle ( server_shutdown ser_shu ) {
+    if ( ser_shu != NULL )
+        serv_shut = ser_shu;
+}
+
+void set_client_end_connection ( client_end_connection cli_end ) {
+    if ( cli_end != NULL )
+        cli_end_con = cli_end;
 }
 
 void * handle_timeout ( void * args ) {
@@ -124,6 +136,22 @@ void request_rcp_login ( char * u_name, char * pass, sockaddr_in remote_addr ) {
     start_rcp_timeout();
 }
 
+void shutdown_server(sockaddr_in addr) {
+    for ( sockaddr_in addr : allowed ) {
+        base_package bp;
+        rcp_package_ack * ack = ( rcp_package_ack * ) & bp;
+        ack->protocol = PROTOCOL_RCP;
+        ack->package = PACKAGE_RCP_ACK;
+        ack->ack_package = PACKAGE_RCP_EXIT;
+        ack->remote_addr = addr;
+        *con << bp;
+        std::cout << "Shuting down Connection for " << inet_ntoa ( addr.sin_addr ) << std::endl;
+    }
+    std::cout << "Shuting down Server!" << std::endl;
+    if ( serv_shut != NULL )
+        serv_shut ( addr );
+}
+
 void handle_rcp_ack ( base_package bp ) {
     if ( bp.protocol == PROTOCOL_RCP && bp.package == PACKAGE_RCP_ACK ) {
         rcp_package_ack * ack = ( rcp_package_ack * ) & bp;
@@ -140,12 +168,13 @@ void handle_rcp_ack ( base_package bp ) {
             ack_->remote_addr = bp.remote_addr;
             ack_->package = PACKAGE_RCP_ACK;
             ack_->protocol = PROTOCOL_RCP;
-	    //std::cout << "Sending ACK_ACK" << std::endl;
+            //std::cout << "Sending ACK_ACK" << std::endl;
             *con << bp_;
             rcp_state = RCP_STATE_NONE;
             rcp_waiting = false;
-	    std::cout << std::endl;
-            exit(0);
+            std::cout << std::endl;
+            if ( cli_end_con != NULL )
+                cli_end_con();
         } else if ( ack->ack_package == PACKAGE_RCP_ACK ) {
             //std::cout << "Received ACK for ACK Package" << std::endl;
             int i;
@@ -157,13 +186,10 @@ void handle_rcp_ack ( base_package bp ) {
             rcp_waiting = false;
         } else if ( ack->ack_package == PACKAGE_RCP_COMMAND ) {
             rcp_state = RCP_STATE_WAIT_RESULT_COMMAND;
-            //std::cout << "Command was Acknowledged" << std::endl;
             rcp_waiting = false;
         } else if ( ack->ack_package == PACKAGE_RCP_RESULT ) {
-            //std::cout << "Result was Acknowledged" << std::endl;
             if ( end == true ) {
-                std::cout << "Shuting down Server!" << std::endl;
-                exit ( 0 );
+                shutdown_server(ack->remote_addr);
             }
             rcp_waiting = false;
         }
@@ -214,7 +240,7 @@ void handle_rcp_exit ( base_package bp ) {
         ack->ack_package = PACKAGE_RCP_EXIT;
         ack->protocol = PROTOCOL_RCP;
         ack->package = PACKAGE_RCP_ACK;
-	//std::cout << "Sending ACK_Exit" << std::endl;
+        //std::cout << "Sending ACK_Exit" << std::endl;
         *con << *bp_;
         rcp_waiting = true;
         wait_pack = bp_;
@@ -294,7 +320,7 @@ void handle_rcp_command ( base_package bp ) {
         ack->package = PACKAGE_RCP_ACK;
         ack->remote_addr = com->remote_addr;
         *con << bp_;
-        if ( strcmp ( ( const char * ) cmd_, "rs" ) == 0) {
+        if ( strcmp ( ( const char * ) cmd_, "rs" ) == 0 ) {
             end = true;
         }
         if ( cmd != NULL )
