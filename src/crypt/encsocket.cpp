@@ -68,6 +68,8 @@ void encsocket::send_pack(ccp_package ccp)
         ccp.session = current_session;
         sent_enc_packs[ccp.session][ccp.id] = &ccp;
         check_sent_packs[ccp.session][ccp.id] = true;
+        std::cout << "IP Address: " << inet_ntoa(sent_enc_packs[current_session][current_id]->remote_addr.sin_addr) << std::endl;
+        std::cout << "Address Pointer: " << &(sent_enc_packs[current_session][current_id]->remote_addr) << std::endl;
     } else if (ccp.package == PACKAGE_CCP_ACK) {
         std::cout << "Sending ACK package" << std::endl;
     }
@@ -151,6 +153,7 @@ void resend_enc_packs(void * arg) {
             for(j = 0; j < 256; ++j) {
                 if(enc->check_sent_packs[i][j] == true) {
                     std::cout << "Resending Package[session = " << i << ", id = " << j << "] with " << (enc->check_sent_packs[i][j] == true ? "true" : "false") << " to " << inet_ntoa(enc->sent_enc_packs[i][j]->remote_addr.sin_addr) << std::endl;
+                    std::cout << "Address Pointer: " << &(enc->sent_enc_packs[i][j]->remote_addr) << std::endl;
                     enc->send_pack(*(enc->sent_enc_packs[i][j]));
                     enc->sent_enc_packs[i][j]->retries++;
                     if(enc->sent_enc_packs[i][j]->retries >= 10) {

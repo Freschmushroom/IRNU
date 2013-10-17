@@ -55,5 +55,7 @@ int main() {
       pos[i] = text[i];
     }
     (*enc) << *ccp;
+    sleep(2);
+    std::cout << "[INFO]Address: " << inet_ntoa(addr.sin_addr) << std::endl;
     sleep(3);
 }

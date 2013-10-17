@@ -1,0 +1,260 @@
+Adding CCP Handlers
+Starting Connection
+Listening on 9999
+Setting bool pointers
+Task: Initializing new Message Receiving Thread   [Finished]
+Initializing new Packet Resend Thread
+   [Finished]
+Activating Handler
+Full Check. Resent 0 Packages
+Full Check. Resent 0 Packages
+Sending Message
+IP Address: 127.0.0.1
+Address Pointer: 0x7fffc60d0e90
+Sending 5 15 127.0.0.1
+IP Address: 127.0.0.1
+Address Pointer: 0x7fffc60d0e90
+Sending 5 15 127.0.0.1
+Handling ACK Package
+Handling not ACK Package
+Sending to 127.0.0.1
+Sending ACK package
+Sending 5 1 127.0.0.1
+Received Message: Full Check. Resent 0 Packages
+Resending Package[session = 0, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7fffc60d0e90
+0_0 with checksum: 
+205	209	98	201	88	216	239	11	17	168	89	122	140	103	60	130	
+Hello World!
+Handling ACK Package
+Handling not ACK Package
+Sending to 127.0.0.1
+IP Address: Sending ACK package0.0.0.0
+
+Address Pointer: Sending 0x7f99a2c00e300x5 
+1Error: Sending to 3 failed!
+ 127.0.0.1
+Received Message: 1_0 with checksum: 
+153	72	153	38	33	95	251	237Address family not supported by protocol	210	81
+	675 15 0.0.0.0	
+160Resending Package[session = 1, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7fffc60d0e90
+	190	117	54	122	
+This is a encrypted Test if you can read this you are either the receiverError: Sending to  3o failed!r
+Address family not supported by protocol
+ 5 15 0.0.0.0
+Resending Package[session = 2, id = 0] with true to 0.0.0.0
+Address Pointer: t0x7f99a2c00e30h
+is api haz somError: Sending to e bug3... failed!
+
+Address family not supported by protocol
+5 15 0.0.0.0
+Handling ACK Package
+Handling not ACK Package
+Received Message: 0_0 with checksum: 
+68	80	74	28	165	32	177	7	226	158	242	159	119	115	114	161	
+
+Handling ACK Package
+Handling not ACK Package
+Received Message: 0_0 with checksum: 
+68	44	79	96	18	48	247	248	104	151	221	40	126	197	239	88	
+
+Full Check. Resent 3 Packages
+Resending Package[session = 0, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7fffc60d0e90
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+Resending Package[session = 1, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7fffc60d0e90
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+Resending Package[session = 2, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7f99a2c00e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+[INFO]Address: 127.0.0.1
+Full Check. Resent 3 Packages
+Resending Package[session = 0, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7fffc60d0e90
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Resending Package[session = 1, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7fffc60d0e90
+IP Address: 153.127.0.0
+Address Pointer: 0x7f99a2c00e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Resending Package[session = 2, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7f99a2c00e30
+IP Address: 153.127.0.0
+Address Pointer: 0x7f99a2c00e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Full Check. Resent 3 Packages
+Resending Package[session = 0, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7fffc60d0e90
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Resending Package[session = 1, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7fffc60d0e90
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Resending Package[session = 2, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7f99a2c00e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Full Check. Resent 3 Packages
+Resending Package[session = 0, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7fffc60d0e90
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Resending Package[session = 1, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7fffc60d0e90
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Resending Package[session = 2, id = 0] with true to 153.127.0.0
+Address Pointer: 0x7f99a2c00e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 153.127.0.0
+Adding CCP Handlers
+Starting Connection
+Listening on 9999
+Setting bool pointers
+Task: Initializing new Message Receiving Thread   [Finished]
+Initializing new Packet Resend Thread
+   [Finished]
+Activating Handler
+Full Check. Resent 0 Packages
+Full Check. Resent 0 Packages
+Sending Message
+IP Address: 127.0.0.1
+Address Pointer: 0x7fffbefa5ba0
+Sending 5 15 127.0.0.1
+IP Address: 127.0.0.1
+Address Pointer: 0x7fffbefa5ba0
+Sending 5 15 127.0.0.1
+Handling ACK Package
+Handling not ACK Package
+Sending to 127.0.0.1
+Sending ACK package
+Sending 5 1 127.0.0.1
+Received Message: 0_0 with checksum: 
+205	209	98	201	88	216	239	11	17	168	89	122	140	103	60	130	
+Hello World!
+Handling ACK Package
+Handling not ACK Package
+Sending to 127.0.0.1
+Sending ACK package
+Sending 5 1 127.0.0.1
+Received Message: 1_0 with checksum: 
+147	4	40	210	95	10	172	167	125	239	12	233	0	100	124	199	
+This is a encrypted Test if you can read this you are either the receiver or this api haz some bug...
+Handling ACK Package
+Handling not ACK Package
+Received Message: 0_0 with checksum: 
+68	80	74	28	165	32	177	7	226	158	242	159	119	115	114	161	
+
+Handling ACK Package
+Handling not ACK Package
+Received Message: 0_0 with checksum: 
+68	44	79	96	18	48	247	248	104	151	221	40	126	197	239	88	
+
+Full Check. Resent 0 Packages
+Resending Package[session = 0, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7fffbefa5ba0
+IP Address: 0.0.0.0
+Address Pointer: 0x7f77e30b9e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+Resending Package[session = 1, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7fffbefa5ba0
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+Resending Package[session = 2, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7f77e30b9e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+Full Check. Resent 3 Packages
+Resending Package[session = 0, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7fffbefa5ba0
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+Resending Package[session = 1, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7fffbefa5ba0
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+Resending Package[session = 2, id = 0] with true to 0.0.0.0
+Address Pointer: 0x7f77e30b9e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 0.0.0.0
+[INFO]Address: 127.0.0.1
+Full Check. Resent 3 Packages
+Resending Package[session = 0, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7fffbefa5ba0
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
+Resending Package[session = 1, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7fffbefa5ba0
+IP Address: 119.127.0.0
+Address Pointer: 0x7f77e30b9e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
+Resending Package[session = 2, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7f77e30b9e30
+IP Address: 119.127.0.0
+Address Pointer: 0x7f77e30b9e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
+Full Check. Resent 3 Packages
+Resending Package[session = 0, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7fffbefa5ba0
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
+Resending Package[session = 1, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7fffbefa5ba0
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
+Resending Package[session = 2, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7f77e30b9e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
+Full Check. Resent 3 Packages
+Resending Package[session = 0, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7fffbefa5ba0
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
+Resending Package[session = 1, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7fffbefa5ba0
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
+Resending Package[session = 2, id = 0] with true to 119.127.0.0
+Address Pointer: 0x7f77e30b9e30
+Error: Sending to 3 failed!
+Address family not supported by protocol
+5 15 119.127.0.0
