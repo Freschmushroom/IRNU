@@ -33,6 +33,7 @@
 #include "ccp/irnu_ccp.hpp"
 #include <cryptopp/config.h>
 #include <cryptopp/aes.h>
+#include <cryptopp/md5.h>
 #include <vector>
 
 class encsocket : UDPSocket
@@ -40,15 +41,20 @@ class encsocket : UDPSocket
 private:
   byte key[CryptoPP::AES::DEFAULT_KEYLENGTH];
   std::vector<enc_handler> l_handler;
+  unsigned char current_session;
+  unsigned char current_id;
+  pthread_t resend_id;
 public:
     encsocket();
     virtual encsocket& operator+=(byte[]);
     virtual encsocket& operator<<(ccp_package);
     virtual encsocket& operator<<(char *);
-    virtual void fetch_enc_input(void *);
+    void send_pack(ccp_package);
     void handle_enc(unsigned char* data, sockaddr_in addr);    
     void add_enc_handler(enc_handler);
     bool start_connection();
+    ccp_package* sent_enc_packs[256][256];
+    bool check_sent_packs[256][256];
 };
 
 #endif // ENCSOCKET_H

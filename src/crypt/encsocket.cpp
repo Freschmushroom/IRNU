@@ -27,6 +27,9 @@
 
 
 #include "encsocket.h"
+#include "ccp/irnu_ccp.hpp"
+#include "ccp/irnu_ccp.hpp"
+#include "ccp/irnu_ccp.hpp"
 #include "../socket/udpsocket.h"
 
 encsocket::encsocket() : UDPSocket()
@@ -46,15 +49,51 @@ encsocket& encsocket::operator+=(byte * key_)
 
 encsocket& encsocket::operator<<(ccp_package ccp)
 {
-    encrypt(&ccp, key);
-    UDPSocket::operator<<(*((base_package*) & ccp));
+    send_pack(ccp);
+    current_id = 0;
+    current_session++;
 }
+
+void encsocket::send_pack(ccp_package ccp)
+{
+    encrypt(&ccp, key);
+    int i;
+    byte * check = get_checksum(ccp.blocks[0]);
+    for(i = 0; i < 16; i++) {
+        ccp.checksum[i] = check[i];
+    }
+    free(check);
+    if(ccp.retries == 0 && ccp.package != PACKAGE_CCP_ACK) {
+        ccp.id = current_id;
+        ccp.session = current_session;
+        sent_enc_packs[ccp.session][ccp.id] = &ccp;
+        check_sent_packs[ccp.session][ccp.id] = true;
+    } else if (ccp.package == PACKAGE_CCP_ACK) {
+        std::cout << "Sending ACK package" << std::endl;
+    }
+    base_package * bp = (base_package *) &ccp;
+    bzero ( buf, BUFLEN );
+    buf[0] = bp->protocol;
+    buf[1] = bp->package;
+
+    for ( i = 0; i < 254; i++ ) {
+        buf[2 + i] = bp->data[i];
+    }
+    if ( sendto ( sockfd, buf, BUFLEN, 0, ( struct sockaddr* ) &ccp.remote_addr, sizeof ( ccp.remote_addr ) ) == -1 ) {
+        std::cout << "Error: Sending to " << sockfd << " failed!" << std::endl;
+        std::cout << strerror(errno) << std::endl;
+        std::cout << (int) bp->protocol << " " << (int) bp->package << " "  << inet_ntoa(bp->remote_addr.sin_addr) << std::endl;
+    } else {
+        std::cout << "Sending " << (int) bp->protocol << " " << (int) bp->package << " "  << inet_ntoa(bp->remote_addr.sin_addr) << std::endl;;
+    }
+}
+
 
 encsocket& encsocket::operator<<(char* msg)
 {
-    if(strlen(msg) > 224) {
+    if(strlen(msg) > 208) {
         int i, j, count;
-        count = (int)(strlen(msg) / 224) + 1;
+        count = (int)(strlen(msg) / 208) + 1;
         char * p = msg;
         for(j = 0; j < count; ++j) {
             unsigned char * pos;
@@ -63,8 +102,9 @@ encsocket& encsocket::operator<<(char* msg)
             for(i = 0; i < strlen(msg); ++i) {
                 pos[i] = (unsigned char) msg[i];
             }
-            this->operator<<(ccp);
-            p += 224;
+            send_pack(ccp);
+            current_id++;
+            p += 208;
         }
     } else {
         int i;
@@ -76,31 +116,54 @@ encsocket& encsocket::operator<<(char* msg)
         }
         this->operator<<(ccp);
     }
+    current_session++;
 }
 
-void encsocket::fetch_enc_input(void* arg)
+void fetch_enc_input(void* arg)
 {
     std::cout << "Task: Initializing new Message Receiving Thread";
-    int * sockfd = ( int* ) arg;
+    encsocket * enc = (encsocket *) arg;
+    int sockfd_ = (((UDPSocket *)(enc))->get_sockfd());
+    int * sockfd = &sockfd_;
     unsigned char buff[BUFLEN];
     std::cout << "   [Finished]" << std::endl;
     while ( 1 ) {
-        std::cout << "Starting loop" << std::endl;
         bzero ( buff, BUFLEN );
-        std::cout << "Step_0x00" << std::endl;
         struct sockaddr_in addr;
-        std::cout << "Step_0x01" << std::endl;
         socklen_t slen = sizeof ( addr );
-        std::cout << "Step_0x02" << std::endl;
-        try {
-            if ( recvfrom ( ( *sockfd ), buff, BUFLEN, 0, ( struct sockaddr* ) &addr, &slen ) == -1 )
-                std::cout << "Error: While Receiving" << std::endl;
-            else
-                std::cout << "Received" << std::endl;
-        } catch (...) {
-            std::cout << "Step_0x03" << std::endl;
+        if ( recvfrom ( ( *sockfd ), buff, BUFLEN, 0, ( struct sockaddr* ) &addr, &slen ) == -1 )
+            std::cout << "Error: While Receiving" << std::endl;
+        else
+            ;
+
+        enc->handle_enc ( buff, addr );
+    }
+}
+
+void resend_enc_packs(void * arg) {
+    std::cout << "Initializing new Packet Resend Thread" << std::endl;
+    encsocket * enc = (encsocket *) arg;
+    std::cout << "   [Finished]" << std::endl;
+    while(1) {
+        int i, j, count;
+        count = 0;
+        for(i = 0; i < 256; ++i) {
+            for(j = 0; j < 256; ++j) {
+                if(enc->check_sent_packs[i][j] == true) {
+                    std::cout << "Resending Package[session = " << i << ", id = " << j << "] with " << (enc->check_sent_packs[i][j] == true ? "true" : "false") << " to " << inet_ntoa(enc->sent_enc_packs[i][j]->remote_addr.sin_addr) << std::endl;
+                    enc->send_pack(*(enc->sent_enc_packs[i][j]));
+                    enc->sent_enc_packs[i][j]->retries++;
+                    if(enc->sent_enc_packs[i][j]->retries >= 10) {
+                        enc->check_sent_packs[i][j] = false;
+                    }
+                    count++;
+                } else {
+                    enc->sent_enc_packs[i][j] = NULL;
+                }
+            }
         }
-        handle_enc ( buff, addr );
+        sleep(1);
+        std::cout << "Full Check. Resent " << count << " Packages" << std::endl;
     }
 }
 
@@ -112,13 +175,22 @@ bool encsocket::start_connection()
     bzero ( &local_addr, sizeof ( local_addr ) );
     std::cout << "Listening on " << ENC_PORT << std::endl;
     local_addr.sin_family = AF_INET;
-    local_addr.sin_port = htons ( PORT );
+    local_addr.sin_port = htons ( ENC_PORT );
     local_addr.sin_addr.s_addr = htonl ( INADDR_ANY );
     if ( bind ( sockfd, ( struct sockaddr* ) &local_addr, sizeof ( local_addr ) ) == -1 )
         std::cout << "Error: Binding Socket" << std::endl;
+    std::cout << "Setting bool pointers" << std::endl;
+    int i, j;
+    for(i = 0; i < 256; ++i) {
+        for(j = 0; j < 256; ++j) {
+            check_sent_packs[i][j] = false;
+            sent_enc_packs[i][j] == NULL;
+        }
+    }
     //cout << "Info: Starting new Message Receiving Thread" << endl;
-    int err = pthread_create ( &input_id, NULL,(void* (*) (void*)) &encsocket::fetch_enc_input, ( void* ) &sockfd );
-    //cout << "Created Thread with code: " << err << endl;
+    int err = pthread_create ( &input_id, NULL,(void* (*) (void*)) &fetch_enc_input, ( void* ) this );
+    err = pthread_create( &resend_id, NULL, (void *(*)(void*)) &resend_enc_packs, (void *) this);
+    //cout << "Created Thread with code: " << err << endl,
 }
 
 
@@ -139,9 +211,17 @@ void encsocket::handle_enc(unsigned char* data, sockaddr_in addr)
         bp.data[i] = data[i + 2];
     }
     ccp_package * ccp = (ccp_package *) &bp;
+    byte * check = get_checksum(ccp->blocks[0]);
+    for(i = 0; i < 16; ++i) {
+        if(check[i] != ccp->checksum[i]) {
+            std::cout << "Checksum Error with package@[session = " << (int)ccp->session << ", id = " << (int)ccp->id << "]" << std::endl;
+            return;
+        }
+    }
+    int j;
     decrypt(ccp, key);
     for(i = 0; i < l_handler.size(); ++i) {
-        l_handler[i] (*ccp);
+        l_handler[i] (*ccp, (void *) this);
     }
 }
 

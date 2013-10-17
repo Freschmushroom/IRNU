@@ -10,10 +10,14 @@
 
 using namespace CryptoPP;
 
-void enc_handle(ccp_package ccp) {
-  std::cout << "Received Message from " << inet_ntoa(ccp.remote_addr.sin_addr) << ": ";
-  unsigned char * pos = ccp.blocks[0];
+void enc_handle(ccp_package ccp, void *) {
+  unsigned char * pos = ccp.blocks[0] + 16;
   int i;
+  std::cout << "Received Message: " << (int) ccp.session << "_" << (int) ccp.id << " with checksum: " << std::endl;
+  for(i = 0; i < 16; ++i) {
+    std::cout << (int) ccp.checksum[i] << "\t";
+  }
+  std::cout << std::endl; 
   for(i = 0; i < strlen((char *) pos); ++i) {
     std::cout << (char) pos[i];
   }
@@ -22,49 +26,34 @@ void enc_handle(ccp_package ccp) {
 
 int main() {
     byte key[AES::DEFAULT_KEYLENGTH];
-    /*ccp_package ccp;
-    ccp.package = PACKAGE_CCP;
-    ccp.protocol = 0x05;
-    ccp.id = 0;
-    ccp.checksum = 0;
-    char * text = "Hello World!";
-    unsigned char * pos = ccp.blocks[0] + 16;
-    int i, j;
-    for(i = 0; i <  strlen(text); ++i) {
-      pos[i] = (unsigned char) text[i];
-    }
-    for(i = 0; i < 15; ++i) {
-      std::cout << i + 1 << ":\t";
-      for(j = 0; j < 16; ++j) {
-	std::cout << (int) ccp.blocks[i][j] << "\t";
-      }
-      std::cout << std::endl;
-    }
-    encrypt(&ccp, key);
-    std::cout << "Encrypted Data:" << std::endl;
-    for(i = 0; i < 15; ++i) {
-      std::cout << i + 1 << ":\t";
-      for(j = 0; j < 16; ++j) {
-	std::cout << (int) ccp.blocks[i][j] << "\t";
-      }
-      std::cout << std::endl;
-    }
-    decrypt(&ccp, key);
-    std::cout << std::endl << "Decrypted Data:" << std::endl;
-    for(i = 0; i < 15; ++i) {
-      std::cout << i + 1 << ":\t";
-      for(j = 0; j < 16; ++j) {
-	std::cout << (int) ccp.blocks[i][j] << "\t";
-      }
-      std::cout << std::endl;
-    }*/
-    encsocket enc;
-    enc += key;
+    struct sockaddr_in addr = *(new sockaddr_in);
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons ( 9999 );
+    if ( inet_aton ( "127.0.0.1", &addr.sin_addr ) == 0 )
+        std::cout << "Error: inet_aton()" << std::endl;
+    encsocket * enc = new encsocket;
+    add_ccp_handlers(enc);
+    *enc += key;
     std::cout << "Starting Connection" << std::endl;
-    enc.start_connection();
+    enc->start_connection();
+    sleep(1);
     std::cout << "Activating Handler" << std::endl;
     sleep(2);
-    enc.add_enc_handler(enc_handle);
+    enc->add_enc_handler(enc_handle);
     std::cout << "Sending Message" << std::endl;
-    enc << "Hello World!";
+    ccp_package * ccp = new ccp_package;
+    ccp->remote_addr = addr;
+    byte * pos = ccp->blocks[0] + 16;
+    char * text = "Hello World!";
+    int i;
+    for(i = 0; i < strlen(text); ++i) {
+      pos[i] = text[i];
+    }
+    *enc << *ccp;
+    text = "This is a encrypted Test if you can read this you are either the receiver or this api haz some bug...";
+    for(i = 0; i < strlen(text); ++i) {
+      pos[i] = text[i];
+    }
+    (*enc) << *ccp;
+    sleep(3);
 }

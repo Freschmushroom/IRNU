@@ -23,6 +23,10 @@ src/crypt/test/CMakeFiles/crypt_test.dir/__/__/socket/udpsocket.cpp.o: ../src/so
 src/crypt/test/CMakeFiles/crypt_test.dir/__/__/socket/udpsocket.cpp.o: ../src/socket/udpsocket.h
 
 src/crypt/test/CMakeFiles/crypt_test.dir/__/ccp/irnu_ccp_util.cpp.o: ../src/crypt/ccp/../../IRNU.hpp
+src/crypt/test/CMakeFiles/crypt_test.dir/__/ccp/irnu_ccp_util.cpp.o: ../src/crypt/ccp/../../socket/../IRNU.hpp
+src/crypt/test/CMakeFiles/crypt_test.dir/__/ccp/irnu_ccp_util.cpp.o: ../src/crypt/ccp/../../socket/udpsocket.h
+src/crypt/test/CMakeFiles/crypt_test.dir/__/ccp/irnu_ccp_util.cpp.o: ../src/crypt/ccp/../ccp/irnu_ccp.hpp
+src/crypt/test/CMakeFiles/crypt_test.dir/__/ccp/irnu_ccp_util.cpp.o: ../src/crypt/ccp/../encsocket.h
 src/crypt/test/CMakeFiles/crypt_test.dir/__/ccp/irnu_ccp_util.cpp.o: ../src/crypt/ccp/irnu_ccp.hpp
 src/crypt/test/CMakeFiles/crypt_test.dir/__/ccp/irnu_ccp_util.cpp.o: ../src/crypt/ccp/irnu_ccp_util.cpp
 
