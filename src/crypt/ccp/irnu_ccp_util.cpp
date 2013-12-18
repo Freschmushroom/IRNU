@@ -61,7 +61,7 @@ void handle_ccp_pack(ccp_package ccp, void * arg) {
         ack->remote_addr = ccp.remote_addr;
         ack->package = PACKAGE_CCP_ACK;
         ack->protocol = PROTOCOL_CCP;
-        std::cout << "Sending to " << inet_ntoa(ccp.remote_addr.sin_addr) << std::endl;
+        std::cout << "Sending to " << inet_ntoa(ccp.remote_addr->sin_addr) << std::endl;
         enc->send_pack(*((ccp_package *)(ack)));
     }
 }

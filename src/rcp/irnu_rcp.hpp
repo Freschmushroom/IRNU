@@ -26,7 +26,7 @@ typedef struct rcp_package_ack_struct {
     unsigned char package = PACKAGE_RCP_ACK;
     unsigned char ack_package;
     unsigned char data[253];
-    struct sockaddr_in remote_addr;
+    struct sockaddr_in * remote_addr;
 } rcp_package_ack;
 
 typedef struct rcp_package_exit_struct {
@@ -36,7 +36,7 @@ typedef struct rcp_package_exit_struct {
     unsigned char minute;
     unsigned char second;
     unsigned char data[251];
-    struct sockaddr_in remote_addr;
+    struct sockaddr_in * remote_addr;
 } rcp_package_exit;
 
 typedef struct rcp_package_request_struct {
@@ -45,7 +45,7 @@ typedef struct rcp_package_request_struct {
     char u_name[10];
     char pass[10];
     unsigned char data[234];
-    struct sockaddr_in remote_addr;
+    struct sockaddr_in * remote_addr;
 } rcp_package_request;
 
 typedef struct rcp_package_command_struct {
@@ -53,7 +53,7 @@ typedef struct rcp_package_command_struct {
     unsigned char package = PACKAGE_RCP_COMMAND;
     unsigned char args;
     unsigned char data[253];
-    struct sockaddr_in remote_addr;
+    struct sockaddr_in * remote_addr;
 } rcp_package_command;
 
 typedef struct rcp_package_result_struct {
@@ -61,7 +61,7 @@ typedef struct rcp_package_result_struct {
     unsigned char package = PACKAGE_RCP_RESULT;
     unsigned char err_code;
     unsigned char data[253];
-    struct sockaddr_in remote_addr;
+    struct sockaddr_in * remote_addr;
 } rcp_package_result;
 
 void rcp_ack ( base_package *, rcp_package_ack * );	//Convert base_package to rcp_package_ack

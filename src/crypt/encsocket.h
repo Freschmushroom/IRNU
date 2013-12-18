@@ -55,6 +55,7 @@ public:
     bool start_connection();
     ccp_package* sent_enc_packs[256][256];
     bool check_sent_packs[256][256];
+    sockaddr_in remote_addr[256][256];
 };
 
 #endif // ENCSOCKET_H

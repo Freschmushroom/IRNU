@@ -21,7 +21,7 @@ typedef struct ccp_package_struct {
   unsigned char retries = 0;
   unsigned char placeholder[11];
   unsigned char blocks[14][16];
-  struct sockaddr_in remote_addr;
+  struct sockaddr_in * remote_addr;
 } ccp_package;
 
 typedef struct ccp_package_ack_struct {
@@ -35,7 +35,7 @@ typedef struct ccp_package_ack_struct {
   unsigned char ack_session;
   unsigned char ack_id;
   unsigned char data[222];
-  struct sockaddr_in remote_addr;
+  struct sockaddr_in * remote_addr;
 } ccp_ack_package;
 
 void encrypt(ccp_package*, byte*); 

@@ -15,7 +15,7 @@ typedef struct base_package_struct {
     unsigned char protocol;
     unsigned char package;
     unsigned char data[254];
-    struct sockaddr_in remote_addr;
+    struct sockaddr_in * remote_addr;
 } base_package;
 
 typedef void ( * handler ) ( base_package );

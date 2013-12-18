@@ -67,11 +67,17 @@ void encsocket::send_pack(ccp_package ccp)
         ccp.id = current_id;
         ccp.session = current_session;
         sent_enc_packs[ccp.session][ccp.id] = &ccp;
+        //std::cout << "Pushing package with HW Addr: " << &ccp << " to " << (int)ccp.session << ", " << (int)ccp.id << std::endl;
         check_sent_packs[ccp.session][ccp.id] = true;
-        std::cout << "IP Address: " << inet_ntoa(sent_enc_packs[current_session][current_id]->remote_addr.sin_addr) << std::endl;
-        std::cout << "Address Pointer: " << &(sent_enc_packs[current_session][current_id]->remote_addr) << std::endl;
+        remote_addr[ccp.session][ccp.id] = *(ccp.remote_addr);
+        //std::cout << "IP Address: " << inet_ntoa(sent_enc_packs[current_session][current_id]->remote_addr->sin_addr) << std::endl;
+        //std::cout << "Address Pointer: " << &(sent_enc_packs[current_session][current_id]->remote_addr) << std::endl;
     } else if (ccp.package == PACKAGE_CCP_ACK) {
-        std::cout << "Sending ACK package" << std::endl;
+        //std::cout << "Sending ACK package" << std::endl;
+    } else {
+        ccp.remote_addr = &(remote_addr[ccp.session][ccp.id]);
+        ccp.remote_addr->sin_port = htons(9999);
+        ccp.remote_addr->sin_family = AF_INET;
     }
     base_package * bp = (base_package *) &ccp;
     bzero ( buf, BUFLEN );
@@ -81,12 +87,13 @@ void encsocket::send_pack(ccp_package ccp)
     for ( i = 0; i < 254; i++ ) {
         buf[2 + i] = bp->data[i];
     }
-    if ( sendto ( sockfd, buf, BUFLEN, 0, ( struct sockaddr* ) &ccp.remote_addr, sizeof ( ccp.remote_addr ) ) == -1 ) {
-        std::cout << "Error: Sending to " << sockfd << " failed!" << std::endl;
-        std::cout << strerror(errno) << std::endl;
-        std::cout << (int) bp->protocol << " " << (int) bp->package << " "  << inet_ntoa(bp->remote_addr.sin_addr) << std::endl;
+    if ( sendto ( sockfd, buf, BUFLEN, 0, ( struct sockaddr* ) &ccp.remote_addr, sizeof ( &ccp.remote_addr ) ) == -1 ) {
+        //std::cout << "Error: Sending to " << sockfd << " failed!" << std::endl;
+        //std::cout << strerror(errno) << std::endl;
+        //std::cout << (int) bp->protocol << " " << (int) bp->package << " "  << inet_ntoa(bp->remote_addr->sin_addr) << std::endl;
     } else {
-        std::cout << "Sending " << (int) bp->protocol << " " << (int) bp->package << " "  << inet_ntoa(bp->remote_addr.sin_addr) << std::endl;;
+        //std::cout << "Sending " << (int) bp->protocol << " " << (int) bp->package << " "  << inet_ntoa(bp->remote_addr->sin_addr) << std::endl;;
+        //std::cout << "[Finished]" << std::endl;
     }
 }
 
@@ -133,27 +140,32 @@ void fetch_enc_input(void* arg)
         bzero ( buff, BUFLEN );
         struct sockaddr_in addr;
         socklen_t slen = sizeof ( addr );
-        if ( recvfrom ( ( *sockfd ), buff, BUFLEN, 0, ( struct sockaddr* ) &addr, &slen ) == -1 )
+        if ( recvfrom ( ( *sockfd ), buff, BUFLEN, 0, ( struct sockaddr* ) &addr, &slen ) == -1 ) {
             std::cout << "Error: While Receiving" << std::endl;
+            continue;
+        }
         else
-            ;
+            std::cout << "[INFO] Read package" << std::endl;
 
         enc->handle_enc ( buff, addr );
     }
+    std::cout << "[FATAL] Code shouldn't reach that point" << std::endl;
 }
 
 void resend_enc_packs(void * arg) {
-    std::cout << "Initializing new Packet Resend Thread" << std::endl;
+    //std::cout << "Initializing new Packet Resend Thread" << std::endl;
     encsocket * enc = (encsocket *) arg;
-    std::cout << "   [Finished]" << std::endl;
+    //std::cout << "   [Finished]" << std::endl;
     while(1) {
         int i, j, count;
         count = 0;
         for(i = 0; i < 256; ++i) {
             for(j = 0; j < 256; ++j) {
                 if(enc->check_sent_packs[i][j] == true) {
-                    std::cout << "Resending Package[session = " << i << ", id = " << j << "] with " << (enc->check_sent_packs[i][j] == true ? "true" : "false") << " to " << inet_ntoa(enc->sent_enc_packs[i][j]->remote_addr.sin_addr) << std::endl;
-                    std::cout << "Address Pointer: " << &(enc->sent_enc_packs[i][j]->remote_addr) << std::endl;
+                    void * addr = &enc->sent_enc_packs[i][j]->remote_addr;
+                    /*std::cout << "Resending Package[session = " << i << ", id = " << j << "] with " << (enc->check_sent_packs[i][j] == true ? "true" : "false") << " to " << inet_ntoa(enc->sent_enc_packs[i][j]->remote_addr->sin_addr) << std::endl;
+                    std::cout << "Resending package with HW Addr: " << &enc->sent_enc_packs[i][j] << " on " << i << ", " << j << std::endl;
+                    std::cout << "Address Pointer: " << &(enc->sent_enc_packs[i][j]->remote_addr) << std::endl;*/
                     enc->send_pack(*(enc->sent_enc_packs[i][j]));
                     enc->sent_enc_packs[i][j]->retries++;
                     if(enc->sent_enc_packs[i][j]->retries >= 10) {
@@ -166,7 +178,7 @@ void resend_enc_packs(void * arg) {
             }
         }
         sleep(1);
-        std::cout << "Full Check. Resent " << count << " Packages" << std::endl;
+        //std::cout << "Full Check. Resent " << count << " Packages" << std::endl;
     }
 }
 
@@ -207,8 +219,9 @@ void encsocket::handle_enc(unsigned char* data, sockaddr_in addr)
     base_package bp;
     bp.protocol = data[0];
     bp.package = data[1];
-    bp.remote_addr = addr;
+    bp.remote_addr = &addr;
     bzero(bp.data, 254);
+    std::cout << "Received Package: " << inet_ntoa(addr.sin_addr) << std::endl;
     int i;
     for(i = 0; i < 254; ++i) {
         bp.data[i] = data[i + 2];
@@ -218,11 +231,12 @@ void encsocket::handle_enc(unsigned char* data, sockaddr_in addr)
     for(i = 0; i < 16; ++i) {
         if(check[i] != ccp->checksum[i]) {
             std::cout << "Checksum Error with package@[session = " << (int)ccp->session << ", id = " << (int)ccp->id << "]" << std::endl;
-            return;
+            break;
         }
     }
     int j;
     decrypt(ccp, key);
+    std::cout << "[INFO] Found " << l_handler.size() << " handlers" << std::endl;
     for(i = 0; i < l_handler.size(); ++i) {
         l_handler[i] (*ccp, (void *) this);
     }

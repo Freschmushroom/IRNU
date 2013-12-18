@@ -26,10 +26,11 @@ void enc_handle(ccp_package ccp, void *) {
 
 int main() {
     byte key[AES::DEFAULT_KEYLENGTH];
-    struct sockaddr_in addr = *(new sockaddr_in);
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons ( 9999 );
-    if ( inet_aton ( "127.0.0.1", &addr.sin_addr ) == 0 )
+    struct sockaddr_in * addr = (sockaddr_in *) malloc(sizeof(sockaddr_in));;
+    addr->sin_family = AF_INET;
+    addr->sin_port = htons ( 9999 );
+    std::cout << "Address pointer: " << &addr << std::endl;
+    if ( inet_aton ( "127.0.0.1", &addr->sin_addr ) == 0 )
         std::cout << "Error: inet_aton()" << std::endl;
     encsocket * enc = new encsocket;
     add_ccp_handlers(enc);
@@ -38,8 +39,8 @@ int main() {
     enc->start_connection();
     sleep(1);
     std::cout << "Activating Handler" << std::endl;
-    sleep(2);
     enc->add_enc_handler(enc_handle);
+    sleep(2);
     std::cout << "Sending Message" << std::endl;
     ccp_package * ccp = new ccp_package;
     ccp->remote_addr = addr;
@@ -56,6 +57,6 @@ int main() {
     }
     (*enc) << *ccp;
     sleep(2);
-    std::cout << "[INFO]Address: " << inet_ntoa(addr.sin_addr) << std::endl;
+    std::cout << "[INFO]Address: " << inet_ntoa(addr->sin_addr) << std::endl;
     sleep(3);
 }

@@ -84,14 +84,14 @@ void handle_rcp_request ( base_package bp ) {
         ack.remote_addr = bp.remote_addr;
         base_package * bp_ = ( base_package * ) & ack;
         *con << ( *bp_ );
-        std::cout << "User " << req->u_name << "@" << inet_ntoa ( req->remote_addr.sin_addr ) << " Requested Purrrmission for RCP Session" << std::endl;
-        if ( check ( req->u_name, req->pass, req->remote_addr ) == true ) {
+        std::cout << "User " << req->u_name << "@" << inet_ntoa ( req->remote_addr->sin_addr ) << " Requested Purrrmission for RCP Session" << std::endl;
+        if ( check ( req->u_name, req->pass, *req->remote_addr ) == true ) {
             rcp_package_result res;
             res.err_code = 0;
             res.remote_addr = bp.remote_addr;
             bp_ = ( base_package * ) &res;
             std::cout << "Access Granted" << std::endl;
-            allowed.push_back ( req->remote_addr );
+            allowed.push_back ( *req->remote_addr );
             *con << ( *bp_ );
         } else {
             rcp_package_result res;
@@ -128,7 +128,7 @@ void request_rcp_login ( char * u_name, char * pass, sockaddr_in remote_addr ) {
         }
         req->pass[i] = pass[i];
     }
-    req->remote_addr = remote_addr;
+    req->remote_addr = &remote_addr;
     *con << bp;
     rcp_state = RCP_STATE_WAIT_ACK_REQUEST;
     wait_pack = &bp;
@@ -143,7 +143,7 @@ void shutdown_server(sockaddr_in addr) {
         ack->protocol = PROTOCOL_RCP;
         ack->package = PACKAGE_RCP_ACK;
         ack->ack_package = PACKAGE_RCP_EXIT;
-        ack->remote_addr = addr;
+        ack->remote_addr = &addr;
         *con << bp;
         std::cout << "Shuting down Connection for " << inet_ntoa ( addr.sin_addr ) << std::endl;
     }
@@ -179,7 +179,7 @@ void handle_rcp_ack ( base_package bp ) {
             //std::cout << "Received ACK for ACK Package" << std::endl;
             int i;
             for ( i = 0; i < allowed.size(); ++i ) {
-                if ( allowed[i].sin_addr.s_addr == ack->remote_addr.sin_addr.s_addr ) {
+                if ( allowed[i].sin_addr.s_addr == ack->remote_addr->sin_addr.s_addr ) {
                     allowed.erase ( allowed.begin() + i );
                 }
             }
@@ -189,7 +189,7 @@ void handle_rcp_ack ( base_package bp ) {
             rcp_waiting = false;
         } else if ( ack->ack_package == PACKAGE_RCP_RESULT ) {
             if ( end == true ) {
-                shutdown_server(ack->remote_addr);
+                shutdown_server(*ack->remote_addr);
             }
             rcp_waiting = false;
         }
@@ -233,7 +233,7 @@ void handle_rcp_result ( base_package bp ) {
 void handle_rcp_exit ( base_package bp ) {
     if ( bp.protocol == PROTOCOL_RCP && bp.package == PACKAGE_RCP_EXIT ) {
         rcp_package_exit * exit = ( rcp_package_exit * ) &bp;
-        std::cout << inet_ntoa ( exit->remote_addr.sin_addr ) << " requested close of connection at " << ( int ) exit->hour << ":" << ( int ) exit->minute << ":" << ( int ) exit->second << " UTC" << std::endl;
+        std::cout << inet_ntoa ( exit->remote_addr->sin_addr ) << " requested close of connection at " << ( int ) exit->hour << ":" << ( int ) exit->minute << ":" << ( int ) exit->second << " UTC" << std::endl;
         base_package * bp_ = new base_package;
         rcp_package_ack * ack = ( rcp_package_ack * ) bp_;
         ack->remote_addr = exit->remote_addr;
@@ -255,7 +255,7 @@ void exit_session ( sockaddr_in remote_addr ) {
     rcp_package_exit * exit = ( rcp_package_exit * ) & bp;
     exit->protocol = PROTOCOL_RCP;
     exit->package = PACKAGE_RCP_EXIT;
-    exit->remote_addr = remote_addr;
+    exit->remote_addr = &remote_addr;
     time_t rawtime;
     struct tm * timeinfo;
 
@@ -287,7 +287,7 @@ void handle_rcp_command ( base_package bp ) {
         bool _allowed = false;
         unsigned int _pos, i;
         for ( i = 0; i < allowed.size(); ++i ) {
-            if ( allowed[i].sin_addr.s_addr == bp.remote_addr.sin_addr.s_addr ) {
+            if ( allowed[i].sin_addr.s_addr == bp.remote_addr->sin_addr.s_addr ) {
                 _allowed = true;
                 break;
             }
@@ -301,7 +301,7 @@ void handle_rcp_command ( base_package bp ) {
         for ( i = 0; i < _pos; ++i ) {
             cmd_[i] = com->data[i];
         }
-        std::cout << "User at " << inet_ntoa ( com->remote_addr.sin_addr ) << " issued command: " << cmd_ << std::endl;
+        std::cout << "User at " << inet_ntoa ( com->remote_addr->sin_addr ) << " issued command: " << cmd_ << std::endl;
         unsigned char * args[com->args];
         unsigned char * pos = com->data;
         pos += _strlen ( com->data );
@@ -324,7 +324,7 @@ void handle_rcp_command ( base_package bp ) {
             end = true;
         }
         if ( cmd != NULL )
-            cmd ( cmd_, args, com->args , com->remote_addr );
+            cmd ( cmd_, args, com->args , *com->remote_addr);
     }
 }
 
@@ -336,7 +336,7 @@ void send_command ( unsigned char * cmd, unsigned char ** args, unsigned int arg
     com->args = arg_count;
     com->protocol = PROTOCOL_RCP;
     com->package = PACKAGE_RCP_COMMAND;
-    com->remote_addr = remote_addr;
+    com->remote_addr = &remote_addr;
     bzero ( com->data, 253 );
     unsigned int i, _pos;
     _pos = _strlen ( cmd );
@@ -372,7 +372,7 @@ void send_result ( unsigned char err_code, unsigned char * other, sockaddr_in re
     res->protocol = PROTOCOL_RCP;
     res->package = PACKAGE_RCP_RESULT;
     res->err_code = err_code;
-    res->remote_addr = remote_addr;
+    res->remote_addr = &remote_addr;
     for ( i = 0; i < len; ++i ) {
         res->data[i] = other[i];
     }

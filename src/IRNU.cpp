@@ -19,7 +19,7 @@ void handle ( unsigned char* data, sockaddr_in addr ) {
     base_package bp;
     bp.protocol = data[0];
     bp.package = data[1];
-    bp.remote_addr = addr;
+    bp.remote_addr = &addr;
     bzero(bp.data, 254);
     int i = 0;
     for ( i = 0; i < 254; ++i ) {
@@ -31,7 +31,7 @@ void handle ( unsigned char* data, sockaddr_in addr ) {
 }
 
 void printPackage ( base_package bp ) {
-    std::cout << "Received Package from: " << inet_ntoa ( bp.remote_addr.sin_addr ) << std::endl;
+    std::cout << "Received Package from: " << inet_ntoa ( bp.remote_addr->sin_addr ) << std::endl;
     if ( bp.protocol == PROTOCOL_RCP ) {
         std::cout << "Remote Control Protocol" << std::endl;
         print_rcp_package ( bp );
